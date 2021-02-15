@@ -1,0 +1,17 @@
+--- 
+title: "Зимняя школа АйсДан 2021: скрейпинг и анализ текстовых данных"
+author: "М. Серветник, А. Котликова, Ю. Мартысенко, Г. Мороз, Ф. Управителев"
+bibliography:
+- bibliography.bib
+editor_options:
+  chunk_output_type: console
+link-citations: yes
+documentclass: book
+site: bookdown::bookdown_site
+biblio-style: apalike
+---
+
+# О курсе
+
+Материалы для курса зимней школы Анализа данных: скрейпинг и анализ текстовых данных.
+

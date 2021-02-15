@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>4 Сбор данных из интернета: rvest | Зимняя школа АйсДан 2021: скрейпинг и анализ текстовых данных</title>
+  <meta name="description" content="4 Сбор данных из интернета: rvest | Зимняя школа АйсДан 2021: скрейпинг и анализ текстовых данных" />
+  <meta name="generator" content="bookdown 0.21 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="4 Сбор данных из интернета: rvest | Зимняя школа АйсДан 2021: скрейпинг и анализ текстовых данных" />
+  <meta property="og:type" content="book" />
+  
+  
+  
+  
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="4 Сбор данных из интернета: rvest | Зимняя школа АйсДан 2021: скрейпинг и анализ текстовых данных" />
+  
+  
+  
+
+<meta name="author" content="М. Серветник, А. Котликова, Ю. Мартысенко, Г. Мороз, Ф. Управителев" />
+
+
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="strings2.html"/>
+<link rel="next" href="загрузка-текста-в-r.html"/>
+<script src="libs/header-attrs-2.6/header-attrs.js"></script>
+<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+
+<link href="libs/pagedtable-1.1/css/pagedtable.css" rel="stylesheet" />
+<script src="libs/pagedtable-1.1/js/pagedtable.js"></script>
+
+
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">2021 АйсДан</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> О курсе</a></li>
+<li class="chapter" data-level="2" data-path="strings.html"><a href="strings.html"><i class="fa fa-check"></i><b>2</b> Работа со строками</a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="strings.html"><a href="strings.html#работа-со-строками-в-r"><i class="fa fa-check"></i><b>2.1</b> Работа со строками в R</a></li>
+<li class="chapter" data-level="2.2" data-path="strings.html"><a href="strings.html#как-получить-строку"><i class="fa fa-check"></i><b>2.2</b> Как получить строку?</a></li>
+<li class="chapter" data-level="2.3" data-path="strings.html"><a href="strings.html#соединение-и-разделение-строк"><i class="fa fa-check"></i><b>2.3</b> Соединение и разделение строк</a></li>
+<li class="chapter" data-level="2.4" data-path="strings.html"><a href="strings.html#количество-символов"><i class="fa fa-check"></i><b>2.4</b> Количество символов</a>
+<ul>
+<li class="chapter" data-level="2.4.1" data-path="strings.html"><a href="strings.html#подсчет-количества-символов"><i class="fa fa-check"></i><b>2.4.1</b> Подсчет количества символов</a></li>
+<li class="chapter" data-level="2.4.2" data-path="strings.html"><a href="strings.html#подгонка-количества-символов"><i class="fa fa-check"></i><b>2.4.2</b> Подгонка количества символов</a></li>
+</ul></li>
+<li class="chapter" data-level="2.5" data-path="strings.html"><a href="strings.html#сортировка"><i class="fa fa-check"></i><b>2.5</b> Сортировка</a></li>
+<li class="chapter" data-level="2.6" data-path="strings.html"><a href="strings.html#поиск-подстроки"><i class="fa fa-check"></i><b>2.6</b> Поиск подстроки</a></li>
+<li class="chapter" data-level="2.7" data-path="strings.html"><a href="strings.html#изменение-строк"><i class="fa fa-check"></i><b>2.7</b> Изменение строк</a>
+<ul>
+<li class="chapter" data-level="2.7.1" data-path="strings.html"><a href="strings.html#изменение-регистра"><i class="fa fa-check"></i><b>2.7.1</b> Изменение регистра</a></li>
+<li class="chapter" data-level="2.7.2" data-path="strings.html"><a href="strings.html#выделение-подстроки"><i class="fa fa-check"></i><b>2.7.2</b> Выделение подстроки</a></li>
+<li class="chapter" data-level="2.7.3" data-path="strings.html"><a href="strings.html#замена-подстроки"><i class="fa fa-check"></i><b>2.7.3</b> Замена подстроки</a></li>
+<li class="chapter" data-level="2.7.4" data-path="strings.html"><a href="strings.html#удаление-подстроки"><i class="fa fa-check"></i><b>2.7.4</b> Удаление подстроки</a></li>
+<li class="chapter" data-level="2.7.5" data-path="strings.html"><a href="strings.html#транслитерация-строк"><i class="fa fa-check"></i><b>2.7.5</b> Транслитерация строк</a></li>
+</ul></li>
+<li class="chapter" data-level="2.8" data-path="strings.html"><a href="strings.html#определение-языка"><i class="fa fa-check"></i><b>2.8</b> Определение языка</a></li>
+<li class="chapter" data-level="2.9" data-path="strings.html"><a href="strings.html#расстояния-между-строками"><i class="fa fa-check"></i><b>2.9</b> Расстояния между строками</a></li>
+<li class="chapter" data-level="2.10" data-path="strings.html"><a href="strings.html#дополнительные-задания"><i class="fa fa-check"></i><b>2.10</b> Дополнительные задания:</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="strings2.html"><a href="strings2.html"><i class="fa fa-check"></i><b>3</b> Работа со строками и текстами</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="strings2.html"><a href="strings2.html#strings-regexp"><i class="fa fa-check"></i><b>3.1</b> Регулярные выражения</a>
+<ul>
+<li class="chapter" data-level="3.1.1" data-path="strings2.html"><a href="strings2.html#strings-patterns"><i class="fa fa-check"></i><b>3.1.1</b> Паттерны</a></li>
+<li class="chapter" data-level="3.1.2" data-path="strings2.html"><a href="strings2.html#strings-symbols"><i class="fa fa-check"></i><b>3.1.2</b> Символы</a></li>
+<li class="chapter" data-level="3.1.3" data-path="strings2.html"><a href="strings2.html#strings-classes"><i class="fa fa-check"></i><b>3.1.3</b> Классы символов</a></li>
+<li class="chapter" data-level="3.1.4" data-path="strings2.html"><a href="strings2.html#strings-metacharacters"><i class="fa fa-check"></i><b>3.1.4</b> Метасимволы</a></li>
+<li class="chapter" data-level="3.1.5" data-path="strings2.html"><a href="strings2.html#strings-logic"><i class="fa fa-check"></i><b>3.1.5</b> Логические операции</a></li>
+<li class="chapter" data-level="3.1.6" data-path="strings2.html"><a href="strings2.html#strings-quantificators"><i class="fa fa-check"></i><b>3.1.6</b> Квантификаторы</a></li>
+<li class="chapter" data-level="3.1.7" data-path="strings2.html"><a href="strings2.html#strings-wildecards"><i class="fa fa-check"></i><b>3.1.7</b> Подстановочные знаки</a></li>
+<li class="chapter" data-level="3.1.8" data-path="strings2.html"><a href="strings2.html#strings-anchors"><i class="fa fa-check"></i><b>3.1.8</b> Якори</a></li>
+<li class="chapter" data-level="3.1.9" data-path="strings2.html"><a href="strings2.html#strings-groups"><i class="fa fa-check"></i><b>3.1.9</b> Группы</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="сбор-данных-из-интернета-rvest.html"><a href="сбор-данных-из-интернета-rvest.html"><i class="fa fa-check"></i><b>4</b> Сбор данных из интернета: <code>rvest</code></a>
+<ul>
+<li class="chapter" data-level="4.1" data-path="сбор-данных-из-интернета-rvest.html"><a href="сбор-данных-из-интернета-rvest.html#введение"><i class="fa fa-check"></i><b>4.1</b> Введение</a></li>
+<li class="chapter" data-level="4.2" data-path="сбор-данных-из-интернета-rvest.html"><a href="сбор-данных-из-интернета-rvest.html#работа-с-пакетом-rvest"><i class="fa fa-check"></i><b>4.2</b> Работа с пакетом <code>rvest</code></a>
+<ul>
+<li class="chapter" data-level="4.2.1" data-path="сбор-данных-из-интернета-rvest.html"><a href="сбор-данных-из-интернета-rvest.html#простой-случай"><i class="fa fa-check"></i><b>4.2.1</b> Простой случай</a></li>
+</ul></li>
+<li class="chapter" data-level="4.3" data-path="сбор-данных-из-интернета-rvest.html"><a href="сбор-данных-из-интернета-rvest.html#использование-атрибута-class"><i class="fa fa-check"></i><b>4.3</b> Использование атрибута <code>class</code></a>
+<ul>
+<li class="chapter" data-level="4.3.1" data-path="сбор-данных-из-интернета-rvest.html"><a href="сбор-данных-из-интернета-rvest.html#чтение-таблиц"><i class="fa fa-check"></i><b>4.3.1</b> Чтение таблиц</a></li>
+<li class="chapter" data-level="4.3.2" data-path="сбор-данных-из-интернета-rvest.html"><a href="сбор-данных-из-интернета-rvest.html#некоторые-советы"><i class="fa fa-check"></i><b>4.3.2</b> Некоторые советы</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="загрузка-текста-в-r.html"><a href="загрузка-текста-в-r.html"><i class="fa fa-check"></i><b>5</b> Загрузка текста в R</a>
+<ul>
+<li class="chapter" data-level="5.1" data-path="загрузка-текста-в-r.html"><a href="загрузка-текста-в-r.html#пакет-gutenbergr"><i class="fa fa-check"></i><b>5.1</b> Пакет <code>gutenbergr</code></a></li>
+<li class="chapter" data-level="5.2" data-path="загрузка-текста-в-r.html"><a href="загрузка-текста-в-r.html#библиотека-tidytext"><i class="fa fa-check"></i><b>5.2</b> Библиотека <code>tidytext</code></a></li>
+<li class="chapter" data-level="5.3" data-path="загрузка-текста-в-r.html"><a href="загрузка-текста-в-r.html#пакет-stopwords"><i class="fa fa-check"></i><b>5.3</b> Пакет <code>stopwords</code></a></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="анализ-текста.html"><a href="анализ-текста.html"><i class="fa fa-check"></i><b>6</b> Анализ текста</a>
+<ul>
+<li class="chapter" data-level="6.1" data-path="анализ-текста.html"><a href="анализ-текста.html#данные"><i class="fa fa-check"></i><b>6.1</b> Данные</a></li>
+<li class="chapter" data-level="6.2" data-path="анализ-текста.html"><a href="анализ-текста.html#tf-idf"><i class="fa fa-check"></i><b>6.2</b> tf-idf</a></li>
+<li class="chapter" data-level="6.3" data-path="анализ-текста.html"><a href="анализ-текста.html#предиктивный-ввод-текста"><i class="fa fa-check"></i><b>6.3</b> Предиктивный ввод текста</a></li>
+<li class="chapter" data-level="6.4" data-path="анализ-текста.html"><a href="анализ-текста.html#анализ-тональности"><i class="fa fa-check"></i><b>6.4</b> Анализ тональности</a></li>
+<li class="chapter" data-level="6.5" data-path="анализ-текста.html"><a href="анализ-текста.html#тематическое-моделирование"><i class="fa fa-check"></i><b>6.5</b> Тематическое моделирование</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="ссылки-на-литературу.html"><a href="ссылки-на-литературу.html"><i class="fa fa-check"></i>Ссылки на литературу</a></li>
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Зимняя школа АйсДан 2021: скрейпинг и анализ текстовых данных</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="сбор-данных-из-интернета-rvest" class="section level1" number="4">
+<h1><span class="header-section-number">4</span> Сбор данных из интернета: <code>rvest</code></h1>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="сбор-данных-из-интернета-rvest.html#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span></code></pre></div>
+<p>Достаточно часто данные не ходят упакованные в готовые файлы <code>.csv</code> или <code>.json</code>. Иногда данные лежат в открытом доступе на какой-нибудь странице в интернете (например, таблицы Левада-центра из предыдущего занятия). А иногда никто и не думал, что что-то станет данными: заголовки и тексты новостей, комментарии, твиты и т. п. В этом разделе мы обсудим основы извлечения данных из вебстраниц.</p>
+<div id="введение" class="section level2" number="4.1">
+<h2><span class="header-section-number">4.1</span> Введение</h2>
+<p>Любая <code>html</code>-документ — это обычный xml файл. Обычно самый верхний узел называется <code>html</code>, который имеет два дочерних узла <code>head</code> и <code>body</code>. Каждый html-документ является инструкцией для браузера, в которой говориться что и в каком порядке нужно отображать, но одновременно эта инструкция является кодом, который мы можем посмотреть. В большинстве браузеров это можно сделать при помощи горячих клавиш <code>Ctrl+U</code>, в Apple Safari — <code>Cmd+Option+U</code>. Кроме того есть режим разработчика, который позволяет делать много всего, в том числе наводить на какой-то объект в браузере и узнавать какой фрагмент кода ему соответствует (этот режим можно вызвать, нажав <code>F12</code> или <code>Ctrl+Shift+I</code>, в Apple Safari вроде нет горячих клавиш и нужно вызывать как-то из меню). Большинство узлов <code>html</code>-документа состоят из</p>
+<ul>
+<li>тег узла, например, <code>p</code></li>
+<li>значения узла, например, <code>Жили-были три медведя.</code></li>
+<li><code>id</code> (уникальные объекты в <code>html</code>-документе), <code>class</code> (неуникальные объекты в <code>html</code>-документе) и другием атрибуты узла</li>
+</ul>
+<p>Например:</p>
+<pre><code>&lt;p class=&quot;story&quot; some_atribute = 42&gt;Жили-были три медведя.&lt;/p&gt;</code></pre>
+<p>Некоторые <code>html</code>-документ не являются статическими и изменяются после того, как страница была открыта при помощи JavaScript’а. Это динамичность может быть скрытой, когда пользователь лишь видит, как открывается страница, а иногда может быть завязана на некоторые действия пользователя. Информацию со статических страниц собирать достаточно просто и для этого нам хватит пакета <code>rvest</code>. C динамическими сайтами все иногда несколько сложнее. Иногда на диномических страницах можно отследить источник данных, посмотрев вкладку <code>Network</code> в режиме разработчика (ведь откуда-то эти данные появляются в браузере, правда?). Иногда необходимо делать <code>POST</code> и <code>GET</code> запросы, хранить cookies, и т. п. — все это можно сделать при помощи пакета <a href="https://cran.r-project.org/web/packages/httr/vignettes/quickstart.html"><code>httr</code></a>, а в самых сложных случаях (когда JavaScript JavaScript погоняет) поможет пакет <a href="https://docs.ropensci.org/RSelenium/"><code>RSelenium</code></a>.</p>
+</div>
+<div id="работа-с-пакетом-rvest" class="section level2" number="4.2">
+<h2><span class="header-section-number">4.2</span> Работа с пакетом <code>rvest</code></h2>
+<p><a href="http://rvest.tidyverse.org/index.html">Пакет <code>rvest</code></a> позволяет скачивать страницы и потом их обрабатывать. Включим библиотеку:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="сбор-данных-из-интернета-rvest.html#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(rvest)</span></code></pre></div>
+<div id="простой-случай" class="section level3" number="4.2.1">
+<h3><span class="header-section-number">4.2.1</span> Простой случай</h3>
+<p>В качестве примера рассмотрим сайт Центра цифровых гуманитарных исследований НИУ ВШЭ:</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="сбор-данных-из-интернета-rvest.html#cb4-1" aria-hidden="true" tabindex="-1"></a>source <span class="ot">&lt;-</span> <span class="fu">read_html</span>(<span class="st">&quot;https://hum.hse.ru/digital&quot;</span>)</span></code></pre></div>
+<p>Объект <code>source</code> является списком, который содержит <code>html</code>-страницу. Давайте допустим, что мы хотем скачать все заголовки новостей, т. е. нам нужны значения всех узло <code>h2</code>. Функция <code>html_nodes()</code> позволяет вычленить исключительно узлы с каким-то тегом из всего <code>xml</code>-файла.</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="сбор-данных-из-интернета-rvest.html#cb5-1" aria-hidden="true" tabindex="-1"></a>source <span class="sc">%&gt;%</span> </span>
+<span id="cb5-2"><a href="сбор-данных-из-интернета-rvest.html#cb5-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">html_nodes</span>(<span class="st">&quot;h2&quot;</span>)</span></code></pre></div>
+<p>Теперь если мы хотим обратиться к значениям этих узлов, мы можем использовать функцию <code>html_text()</code></p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="сбор-данных-из-интернета-rvest.html#cb6-1" aria-hidden="true" tabindex="-1"></a>source <span class="sc">%&gt;%</span> </span>
+<span id="cb6-2"><a href="сбор-данных-из-интернета-rvest.html#cb6-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">html_nodes</span>(<span class="st">&quot;h2&quot;</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb6-3"><a href="сбор-данных-из-интернета-rvest.html#cb6-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">html_text</span>()</span></code></pre></div>
+<p>Если мы откроем превью узла <code>h2</code> (команда <code>View()</code>), то мы увидим что-то такое:</p>
+<p><img src="images/12_title_preview.png" /></p>
+<p>Эта схема показывает, что каждый узел <code>h2</code> содержит узел <code>a</code> который содержит три атрибута: <code>title</code> и <code>href</code>. Вложенность отображается знаком <code>&gt;</code>, а обращаться к атрибутам можно, используя функцию <code>html_attr()</code>:</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="сбор-данных-из-интернета-rvest.html#cb7-1" aria-hidden="true" tabindex="-1"></a>source <span class="sc">%&gt;%</span> </span>
+<span id="cb7-2"><a href="сбор-данных-из-интернета-rvest.html#cb7-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">html_nodes</span>(<span class="st">&quot;h2 &gt; a&quot;</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb7-3"><a href="сбор-данных-из-интернета-rvest.html#cb7-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">html_attr</span>(<span class="st">&quot;title&quot;</span>) <span class="ot">-&gt;</span></span>
+<span id="cb7-4"><a href="сбор-данных-из-интернета-rvest.html#cb7-4" aria-hidden="true" tabindex="-1"></a>  titles</span>
+<span id="cb7-5"><a href="сбор-данных-из-интернета-rvest.html#cb7-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-6"><a href="сбор-данных-из-интернета-rvest.html#cb7-6" aria-hidden="true" tabindex="-1"></a>source <span class="sc">%&gt;%</span> </span>
+<span id="cb7-7"><a href="сбор-данных-из-интернета-rvest.html#cb7-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">html_nodes</span>(<span class="st">&quot;h2 &gt; a&quot;</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb7-8"><a href="сбор-данных-из-интернета-rvest.html#cb7-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">html_attr</span>(<span class="st">&quot;href&quot;</span>) <span class="ot">-&gt;</span></span>
+<span id="cb7-9"><a href="сбор-данных-из-интернета-rvest.html#cb7-9" aria-hidden="true" tabindex="-1"></a>  links</span>
+<span id="cb7-10"><a href="сбор-данных-из-интернета-rvest.html#cb7-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-11"><a href="сбор-данных-из-интернета-rvest.html#cb7-11" aria-hidden="true" tabindex="-1"></a><span class="fu">tibble</span>(titles, links)</span></code></pre></div>
+<p>Как видно из получившейся таблицы, на первой странице сайта всего 10 новостей. А что если мы хотим скачать все новости? Исследовав страницу Центра цифровых гуманитарных исследований, становится понятно, что все новые страницы генерятся по одному и тому же паттерну:</p>
+<ul>
+<li><a href="https://hum.hse.ru/digital/news/page2.html" class="uri">https://hum.hse.ru/digital/news/page2.html</a></li>
+<li><a href="https://hum.hse.ru/digital/news/page3.html" class="uri">https://hum.hse.ru/digital/news/page3.html</a></li>
+<li>…</li>
+<li><a href="https://hum.hse.ru/digital/news/page6.html" class="uri">https://hum.hse.ru/digital/news/page6.html</a></li>
+<li>и даже на первую страницу, на которую мы попали по короткому адресу &lt;hum.hse.ru/digital&gt;, можно также попасть по этому адресу <a href="https://hum.hse.ru/digital/news/page1.html" class="uri">https://hum.hse.ru/digital/news/page1.html</a></li>
+</ul>
+<p>Сгенерим список страниц:</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="сбор-данных-из-интернета-rvest.html#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">str_c</span>(<span class="st">&quot;https://hum.hse.ru/digital/news/page&quot;</span>, <span class="dv">1</span><span class="sc">:</span><span class="dv">6</span>, <span class="st">&quot;.html&quot;</span>)</span></code></pre></div>
+<p>А теперь сделаем функцию, которая ходит по страницам и все собирает</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="сбор-данных-из-интернета-rvest.html#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">map_dfr</span>(<span class="fu">str_c</span>(<span class="st">&quot;https://hum.hse.ru/digital/news/page&quot;</span>, <span class="dv">1</span><span class="sc">:</span><span class="dv">6</span>, <span class="st">&quot;.html&quot;</span>), <span class="cf">function</span>(x){</span>
+<span id="cb9-2"><a href="сбор-данных-из-интернета-rvest.html#cb9-2" aria-hidden="true" tabindex="-1"></a>  source <span class="ot">&lt;-</span> <span class="fu">read_html</span>(x)  </span>
+<span id="cb9-3"><a href="сбор-данных-из-интернета-rvest.html#cb9-3" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb9-4"><a href="сбор-данных-из-интернета-rvest.html#cb9-4" aria-hidden="true" tabindex="-1"></a>  source <span class="sc">%&gt;%</span> </span>
+<span id="cb9-5"><a href="сбор-данных-из-интернета-rvest.html#cb9-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">html_nodes</span>(<span class="st">&quot;h2 &gt; a&quot;</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb9-6"><a href="сбор-данных-из-интернета-rvest.html#cb9-6" aria-hidden="true" tabindex="-1"></a>    <span class="fu">html_attr</span>(<span class="st">&quot;title&quot;</span>) <span class="ot">-&gt;</span></span>
+<span id="cb9-7"><a href="сбор-данных-из-интернета-rvest.html#cb9-7" aria-hidden="true" tabindex="-1"></a>    titles</span>
+<span id="cb9-8"><a href="сбор-данных-из-интернета-rvest.html#cb9-8" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb9-9"><a href="сбор-данных-из-интернета-rvest.html#cb9-9" aria-hidden="true" tabindex="-1"></a>  source <span class="sc">%&gt;%</span> </span>
+<span id="cb9-10"><a href="сбор-данных-из-интернета-rvest.html#cb9-10" aria-hidden="true" tabindex="-1"></a>    <span class="fu">html_nodes</span>(<span class="st">&quot;h2 &gt; a&quot;</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb9-11"><a href="сбор-данных-из-интернета-rvest.html#cb9-11" aria-hidden="true" tabindex="-1"></a>    <span class="fu">html_attr</span>(<span class="st">&quot;href&quot;</span>) <span class="ot">-&gt;</span></span>
+<span id="cb9-12"><a href="сбор-данных-из-интернета-rvest.html#cb9-12" aria-hidden="true" tabindex="-1"></a>    links</span>
+<span id="cb9-13"><a href="сбор-данных-из-интернета-rvest.html#cb9-13" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb9-14"><a href="сбор-данных-из-интернета-rvest.html#cb9-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tibble</span>(titles, links)</span>
+<span id="cb9-15"><a href="сбор-данных-из-интернета-rvest.html#cb9-15" aria-hidden="true" tabindex="-1"></a>}) <span class="ot">-&gt;</span></span>
+<span id="cb9-16"><a href="сбор-данных-из-интернета-rvest.html#cb9-16" aria-hidden="true" tabindex="-1"></a>  df_news</span>
+<span id="cb9-17"><a href="сбор-данных-из-интернета-rvest.html#cb9-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-18"><a href="сбор-данных-из-интернета-rvest.html#cb9-18" aria-hidden="true" tabindex="-1"></a>df_news</span></code></pre></div>
+<div class="rmdtask">
+<p>
+Создайте датафрейм, содержащий заголовки и ссылки на новости со страницы <a href="https://www.hse.ru/ma/dh">Магистерской программы «Цифровые методы в гуманитарных науках»</a>.
+</p>
+</div>
+</div>
+</div>
+<div id="использование-атрибута-class" class="section level2" number="4.3">
+<h2><span class="header-section-number">4.3</span> Использование атрибута <code>class</code></h2>
+<p>Допустим, нас интересует дата создания новости на странице Центра цифровых гуманитарных исследований. Исследовав сайт, легко обнаружить, что информация о дате создания новости хранится в теге <code>span</code>. Однако, если мы попробуем использовать лишь эту информацию, то мы получим много лишнего:</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="сбор-данных-из-интернета-rvest.html#cb10-1" aria-hidden="true" tabindex="-1"></a>source <span class="sc">%&gt;%</span> </span>
+<span id="cb10-2"><a href="сбор-данных-из-интернета-rvest.html#cb10-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">html_nodes</span>(<span class="st">&quot;span&quot;</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb10-3"><a href="сбор-данных-из-интернета-rvest.html#cb10-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">html_text</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb10-4"><a href="сбор-данных-из-интернета-rvest.html#cb10-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">head</span>(<span class="dv">20</span>)</span></code></pre></div>
+<p>Дело в том, что тег <code>span</code> имеется у многих других объектов на странице. Однако, если присмотреться к значениям, которые мы находим в режиме разработчика, можно заметить следующее:</p>
+<p><img src="images/12_developer_mode.png" /></p>
+<p>Если посмотреть код, то мы увидем следующее:</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode html"><code class="sourceCode html"><span id="cb11-1"><a href="сбор-данных-из-интернета-rvest.html#cb11-1" aria-hidden="true" tabindex="-1"></a>...</span>
+<span id="cb11-2"><a href="сбор-данных-из-интернета-rvest.html#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="kw">&lt;span</span><span class="ot"> class=</span><span class="st">&quot;post__date&quot;</span><span class="kw">&gt;</span> 17 декабря, 2019 г.<span class="kw">&lt;/span&gt;</span></span>
+<span id="cb11-3"><a href="сбор-данных-из-интернета-rvest.html#cb11-3" aria-hidden="true" tabindex="-1"></a>...</span></code></pre></div>
+<p>Чтобы обратиться к таким элементам нужно использовать точку:</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="сбор-данных-из-интернета-rvest.html#cb12-1" aria-hidden="true" tabindex="-1"></a>source <span class="sc">%&gt;%</span> </span>
+<span id="cb12-2"><a href="сбор-данных-из-интернета-rvest.html#cb12-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">html_nodes</span>(<span class="st">&quot;span.post__date&quot;</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb12-3"><a href="сбор-данных-из-интернета-rvest.html#cb12-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">html_text</span>()</span></code></pre></div>
+<p>Почистим:</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="сбор-данных-из-интернета-rvest.html#cb13-1" aria-hidden="true" tabindex="-1"></a>source <span class="sc">%&gt;%</span> </span>
+<span id="cb13-2"><a href="сбор-данных-из-интернета-rvest.html#cb13-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">html_nodes</span>(<span class="st">&quot;span.post__date&quot;</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb13-3"><a href="сбор-данных-из-интернета-rvest.html#cb13-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">html_text</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb13-4"><a href="сбор-данных-из-интернета-rvest.html#cb13-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">str_remove_all</span>(<span class="st">&quot;</span><span class="sc">\\</span><span class="st">n|</span><span class="sc">\\</span><span class="st">t&quot;</span>)</span></code></pre></div>
+<div class="rmdtask">
+<p>
+Постройте график, показывающий количество новостей Центра цифровых гуманитарных исследований за каждый месяц.
+</p>
+</div>
+<div id="чтение-таблиц" class="section level3" number="4.3.1">
+<h3><span class="header-section-number">4.3.1</span> Чтение таблиц</h3>
+<p>Таблицы, которые хранятся на <code>html</code>-странице можно считывать как таблицы (а, не например, построчно). Рассмотрим вкладку “Число студентов и вакантные места” на сайте Магистерской программы «Цифровые методы в гуманитарных науках»:</p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="сбор-данных-из-интернета-rvest.html#cb14-1" aria-hidden="true" tabindex="-1"></a>source <span class="ot">&lt;-</span> <span class="fu">read_html</span>(<span class="st">&quot;https://www.hse.ru/ma/dh/vacant&quot;</span>)</span>
+<span id="cb14-2"><a href="сбор-данных-из-интернета-rvest.html#cb14-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-3"><a href="сбор-данных-из-интернета-rvest.html#cb14-3" aria-hidden="true" tabindex="-1"></a>source <span class="sc">%&gt;%</span> </span>
+<span id="cb14-4"><a href="сбор-данных-из-интернета-rvest.html#cb14-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">html_node</span>(<span class="st">&quot;table&quot;</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb14-5"><a href="сбор-данных-из-интернета-rvest.html#cb14-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">html_table</span>()</span></code></pre></div>
+<p>Функция <code>html_node()</code> возвращает первую таблицу на странице. В предыдущих разделах мы использовали функцию <code>html_nodes()</code>, которая вытаскивает все узлы с соответствующими атрибутами:</p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="сбор-данных-из-интернета-rvest.html#cb15-1" aria-hidden="true" tabindex="-1"></a>source <span class="sc">%&gt;%</span> </span>
+<span id="cb15-2"><a href="сбор-данных-из-интернета-rvest.html#cb15-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">html_nodes</span>(<span class="st">&quot;table&quot;</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb15-3"><a href="сбор-данных-из-интернета-rvest.html#cb15-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">html_table</span>() <span class="ot">-&gt;</span></span>
+<span id="cb15-4"><a href="сбор-данных-из-интернета-rvest.html#cb15-4" aria-hidden="true" tabindex="-1"></a>  l</span>
+<span id="cb15-5"><a href="сбор-данных-из-интернета-rvest.html#cb15-5" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(l)</span></code></pre></div>
+<p>Получился список (объект типа <code>list</code>), в котором содержаться все таблицы со страницы. Так что, для того, чтобы работать с конкретной таблицей нужно использовать индексацию списков:</p>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="сбор-данных-из-интернета-rvest.html#cb16-1" aria-hidden="true" tabindex="-1"></a>l[[<span class="dv">1</span>]]</span></code></pre></div>
+</div>
+<div id="некоторые-советы" class="section level3" number="4.3.2">
+<h3><span class="header-section-number">4.3.2</span> Некоторые советы</h3>
+<p>Некоторые ресурсы блокируют возможность скачивать из них данные. Обычно это делается на уровне сервера, который видит, что с какого-то IP приходит по 5 запросов в секунду и ограничивает доступ, на случай если вы начинаете DDoS атаку. Если сервер не отдает вам данные или отдает, но раз в какой-то временной промежуток, следует прописать в вашей программе ожидание (команда <code>Sys.sleep()</code>). Некоторые сайты, например, Википедия, специально архивирует данные, чтобы люди не пытались ее обкачать: <a href="https://en.wikipedia.org/wiki/Wikipedia:Database_download">вот страница</a>, на которой это подробно описано.</p>
+
+</div>
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="strings2.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="загрузка-текста-в-r.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": false,
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": "https://github.com/agricolamz/2021.02.21-23_icedone/edit/master/03-scraping.Rmd",
+"text": "Edit"
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": null,
+"toc": {
+"collapse": "section"
+},
+"self_contained": true
+});
+});
+</script>
+
+</body>
+
+</html>

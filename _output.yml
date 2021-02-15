@@ -1,0 +1,15 @@
+bookdown::gitbook:
+  df_print: paged
+  css: style.css
+  always_allow_html: yes
+  config:
+    self_contained: yes
+    toc:
+      collapse: section
+      before: |
+        <li><a href="./">2021 АйсДан</a></li>
+    sharing: no
+    edit:
+      link: https://github.com/agricolamz/2021.02.21-23_icedone/edit/master/%s
+      text: "Edit"
+

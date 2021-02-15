@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Зимняя школа АйсДан 2021: скрейпинг и анализ текстовых данных</title>
+  <meta name="description" content="Зимняя школа АйсДан 2021: скрейпинг и анализ текстовых данных" />
+  <meta name="generator" content="bookdown 0.21 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Зимняя школа АйсДан 2021: скрейпинг и анализ текстовых данных" />
+  <meta property="og:type" content="book" />
+  
+  
+  
+  
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Зимняя школа АйсДан 2021: скрейпинг и анализ текстовых данных" />
+  
+  
+  
+
+<meta name="author" content="М. Серветник, А. Котликова, Ю. Мартысенко, Г. Мороз, Ф. Управителев" />
+
+
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+
+<link rel="next" href="strings.html"/>
+<script src="libs/header-attrs-2.6/header-attrs.js"></script>
+<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+
+<link href="libs/pagedtable-1.1/css/pagedtable.css" rel="stylesheet" />
+<script src="libs/pagedtable-1.1/js/pagedtable.js"></script>
+
+
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">2021 АйсДан</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> О курсе</a></li>
+<li class="chapter" data-level="2" data-path="strings.html"><a href="strings.html"><i class="fa fa-check"></i><b>2</b> Работа со строками</a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="strings.html"><a href="strings.html#работа-со-строками-в-r"><i class="fa fa-check"></i><b>2.1</b> Работа со строками в R</a></li>
+<li class="chapter" data-level="2.2" data-path="strings.html"><a href="strings.html#как-получить-строку"><i class="fa fa-check"></i><b>2.2</b> Как получить строку?</a></li>
+<li class="chapter" data-level="2.3" data-path="strings.html"><a href="strings.html#соединение-и-разделение-строк"><i class="fa fa-check"></i><b>2.3</b> Соединение и разделение строк</a></li>
+<li class="chapter" data-level="2.4" data-path="strings.html"><a href="strings.html#количество-символов"><i class="fa fa-check"></i><b>2.4</b> Количество символов</a>
+<ul>
+<li class="chapter" data-level="2.4.1" data-path="strings.html"><a href="strings.html#подсчет-количества-символов"><i class="fa fa-check"></i><b>2.4.1</b> Подсчет количества символов</a></li>
+<li class="chapter" data-level="2.4.2" data-path="strings.html"><a href="strings.html#подгонка-количества-символов"><i class="fa fa-check"></i><b>2.4.2</b> Подгонка количества символов</a></li>
+</ul></li>
+<li class="chapter" data-level="2.5" data-path="strings.html"><a href="strings.html#сортировка"><i class="fa fa-check"></i><b>2.5</b> Сортировка</a></li>
+<li class="chapter" data-level="2.6" data-path="strings.html"><a href="strings.html#поиск-подстроки"><i class="fa fa-check"></i><b>2.6</b> Поиск подстроки</a></li>
+<li class="chapter" data-level="2.7" data-path="strings.html"><a href="strings.html#изменение-строк"><i class="fa fa-check"></i><b>2.7</b> Изменение строк</a>
+<ul>
+<li class="chapter" data-level="2.7.1" data-path="strings.html"><a href="strings.html#изменение-регистра"><i class="fa fa-check"></i><b>2.7.1</b> Изменение регистра</a></li>
+<li class="chapter" data-level="2.7.2" data-path="strings.html"><a href="strings.html#выделение-подстроки"><i class="fa fa-check"></i><b>2.7.2</b> Выделение подстроки</a></li>
+<li class="chapter" data-level="2.7.3" data-path="strings.html"><a href="strings.html#замена-подстроки"><i class="fa fa-check"></i><b>2.7.3</b> Замена подстроки</a></li>
+<li class="chapter" data-level="2.7.4" data-path="strings.html"><a href="strings.html#удаление-подстроки"><i class="fa fa-check"></i><b>2.7.4</b> Удаление подстроки</a></li>
+<li class="chapter" data-level="2.7.5" data-path="strings.html"><a href="strings.html#транслитерация-строк"><i class="fa fa-check"></i><b>2.7.5</b> Транслитерация строк</a></li>
+</ul></li>
+<li class="chapter" data-level="2.8" data-path="strings.html"><a href="strings.html#определение-языка"><i class="fa fa-check"></i><b>2.8</b> Определение языка</a></li>
+<li class="chapter" data-level="2.9" data-path="strings.html"><a href="strings.html#расстояния-между-строками"><i class="fa fa-check"></i><b>2.9</b> Расстояния между строками</a></li>
+<li class="chapter" data-level="2.10" data-path="strings.html"><a href="strings.html#дополнительные-задания"><i class="fa fa-check"></i><b>2.10</b> Дополнительные задания:</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="strings.html"><a href="strings.html#strings"><i class="fa fa-check"></i><b>3</b> Работа со строками и текстами</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="strings.html"><a href="strings.html#strings-regexp"><i class="fa fa-check"></i><b>3.1</b> Регулярные выражения</a>
+<ul>
+<li class="chapter" data-level="3.1.1" data-path="strings.html"><a href="strings.html#strings-patterns"><i class="fa fa-check"></i><b>3.1.1</b> Паттерны</a></li>
+<li class="chapter" data-level="3.1.2" data-path="strings.html"><a href="strings.html#strings-symbols"><i class="fa fa-check"></i><b>3.1.2</b> Символы</a></li>
+<li class="chapter" data-level="3.1.3" data-path="strings.html"><a href="strings.html#strings-classes"><i class="fa fa-check"></i><b>3.1.3</b> Классы символов</a></li>
+<li class="chapter" data-level="3.1.4" data-path="strings.html"><a href="strings.html#strings-metacharacters"><i class="fa fa-check"></i><b>3.1.4</b> Метасимволы</a></li>
+<li class="chapter" data-level="3.1.5" data-path="strings.html"><a href="strings.html#strings-logic"><i class="fa fa-check"></i><b>3.1.5</b> Логические операции</a></li>
+<li class="chapter" data-level="3.1.6" data-path="strings.html"><a href="strings.html#strings-quantificators"><i class="fa fa-check"></i><b>3.1.6</b> Квантификаторы</a></li>
+<li class="chapter" data-level="3.1.7" data-path="strings.html"><a href="strings.html#strings-wildecards"><i class="fa fa-check"></i><b>3.1.7</b> Подстановочные знаки</a></li>
+<li class="chapter" data-level="3.1.8" data-path="strings.html"><a href="strings.html#strings-anchors"><i class="fa fa-check"></i><b>3.1.8</b> Якори</a></li>
+<li class="chapter" data-level="3.1.9" data-path="strings.html"><a href="strings.html#strings-groups"><i class="fa fa-check"></i><b>3.1.9</b> Группы</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="сбор-данных-из-интернета-rvest.html"><a href="сбор-данных-из-интернета-rvest.html"><i class="fa fa-check"></i><b>4</b> Сбор данных из интернета: <code>rvest</code></a>
+<ul>
+<li class="chapter" data-level="4.1" data-path="сбор-данных-из-интернета-rvest.html"><a href="сбор-данных-из-интернета-rvest.html#введение"><i class="fa fa-check"></i><b>4.1</b> Введение</a></li>
+<li class="chapter" data-level="4.2" data-path="сбор-данных-из-интернета-rvest.html"><a href="сбор-данных-из-интернета-rvest.html#работа-с-пакетом-rvest"><i class="fa fa-check"></i><b>4.2</b> Работа с пакетом <code>rvest</code></a>
+<ul>
+<li class="chapter" data-level="4.2.1" data-path="сбор-данных-из-интернета-rvest.html"><a href="сбор-данных-из-интернета-rvest.html#простой-случай"><i class="fa fa-check"></i><b>4.2.1</b> Простой случай</a></li>
+</ul></li>
+<li class="chapter" data-level="4.3" data-path="сбор-данных-из-интернета-rvest.html"><a href="сбор-данных-из-интернета-rvest.html#использование-атрибута-class"><i class="fa fa-check"></i><b>4.3</b> Использование атрибута <code>class</code></a>
+<ul>
+<li class="chapter" data-level="4.3.1" data-path="сбор-данных-из-интернета-rvest.html"><a href="сбор-данных-из-интернета-rvest.html#чтение-таблиц"><i class="fa fa-check"></i><b>4.3.1</b> Чтение таблиц</a></li>
+<li class="chapter" data-level="4.3.2" data-path="сбор-данных-из-интернета-rvest.html"><a href="сбор-данных-из-интернета-rvest.html#некоторые-советы"><i class="fa fa-check"></i><b>4.3.2</b> Некоторые советы</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="загрузка-текста-в-r.html"><a href="загрузка-текста-в-r.html"><i class="fa fa-check"></i><b>5</b> Загрузка текста в R</a>
+<ul>
+<li class="chapter" data-level="5.1" data-path="загрузка-текста-в-r.html"><a href="загрузка-текста-в-r.html#пакет-gutenbergr"><i class="fa fa-check"></i><b>5.1</b> Пакет <code>gutenbergr</code></a></li>
+<li class="chapter" data-level="5.2" data-path="загрузка-текста-в-r.html"><a href="загрузка-текста-в-r.html#библиотека-tidytext"><i class="fa fa-check"></i><b>5.2</b> Библиотека <code>tidytext</code></a></li>
+<li class="chapter" data-level="5.3" data-path="загрузка-текста-в-r.html"><a href="загрузка-текста-в-r.html#пакет-stopwords"><i class="fa fa-check"></i><b>5.3</b> Пакет <code>stopwords</code></a></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="анализ-текста.html"><a href="анализ-текста.html"><i class="fa fa-check"></i><b>6</b> Анализ текста</a>
+<ul>
+<li class="chapter" data-level="6.1" data-path="анализ-текста.html"><a href="анализ-текста.html#данные"><i class="fa fa-check"></i><b>6.1</b> Данные</a></li>
+<li class="chapter" data-level="6.2" data-path="анализ-текста.html"><a href="анализ-текста.html#tf-idf"><i class="fa fa-check"></i><b>6.2</b> tf-idf</a></li>
+<li class="chapter" data-level="6.3" data-path="анализ-текста.html"><a href="анализ-текста.html#предиктивный-ввод-текста"><i class="fa fa-check"></i><b>6.3</b> Предиктивный ввод текста</a></li>
+<li class="chapter" data-level="6.4" data-path="анализ-текста.html"><a href="анализ-текста.html#анализ-тональности"><i class="fa fa-check"></i><b>6.4</b> Анализ тональности</a></li>
+<li class="chapter" data-level="6.5" data-path="анализ-текста.html"><a href="анализ-текста.html#тематическое-моделирование"><i class="fa fa-check"></i><b>6.5</b> Тематическое моделирование</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="ссылки-на-литературу.html"><a href="ссылки-на-литературу.html"><i class="fa fa-check"></i>Ссылки на литературу</a></li>
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Зимняя школа АйсДан 2021: скрейпинг и анализ текстовых данных</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="header">
+<h1 class="title">Зимняя школа АйсДан 2021: скрейпинг и анализ текстовых данных</h1>
+<p class="author"><em>М. Серветник, А. Котликова, Ю. Мартысенко, Г. Мороз, Ф. Управителев</em></p>
+</div>
+<div id="о-курсе" class="section level1" number="1">
+<h1><span class="header-section-number">1</span> О курсе</h1>
+<p>Материалы для курса зимней школы Анализа данных: скрейпинг и анализ текстовых данных.</p>
+
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+
+<a href="strings.html" class="navigation navigation-next navigation-unique" aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": false,
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": "https://github.com/agricolamz/2021.02.21-23_icedone/edit/master/index.Rmd",
+"text": "Edit"
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": null,
+"toc": {
+"collapse": "section"
+},
+"self_contained": true
+});
+});
+</script>
+
+</body>
+
+</html>
