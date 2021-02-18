@@ -2,496 +2,503 @@
 editor_options: 
   chunk_output_type: console
 ---
-# Работа со строками {#strings}
+# Работа со строками
 
-## Работа со строками в R
+Видео-приветствие
+"Всем привет! Меня зовут Юля. Я напомню вам о работе со строками в R. Мы посмотрим, как выглядят строки в R, как их можно соединять-разделять, какие функции есть для работы с ними (например,сортировка, поиск и замена подстроки, изменение регистра, транслитеряция и пр). Также мы потрогаем несколько удобных библиотек для работы со строковыми данными. Поехали!"
 
-Для работы со строками можно использовать:
+Работать со строками можно с помощью base R, но чаще всего удобнее пользоваться специальными пакетами:
+* `stringr`, который входит в `tidyverse` ('str_')
+* `stringi` ('stri_')
 
-* базовый R
-* пакет `stringr` (часть `tidyverse`)
-* пакет `stringi` -- отдельный пакет, так что не забудьте его установить:
-
-```{r}
+```{r libs}
 library(tidyverse)
 library(stringi)
 ```
 
-Мы будем пользоваться в основном пакетами `stingr` и `stringi`, так как они в большинстве случаях удобнее. К счастью функции этих пакетов легко отличить от остальных: функции пакет `stringr` всегда начинаются с `str_`, а функции пакета `stringi` --- c `stri_`.
+## Запись строк
 
-Существует [cheat sheet по `stringr`](https://github.com/rstudio/cheatsheets/raw/master/strings.pdf).
+Для начала посмотрим, как можно получить строку.
 
-## Как получить строку?
+* Присвоение
 
-* следите за кавычками
+Надо вот так:
+
 ```{r}
-"the quick brown fox jumps over the lazy dog"
-'the quick brown fox jumps over the lazy dog'
-"the quick 'brown' fox jumps over the lazy dog"
-'the quick "brown" fox jumps over the lazy dog'
+string1 <- "Я строка"
+string2 <- 'И я строка'
+string1
+string2
 ```
 
-* пустая строка
-```{r}
-""
-''
-character(3)
+Вот так вот не надо:
+
+```{r, error = TRUE}
+string3 <- "Я тоже своего рода "строка"
+string3
 ```
 
-* преобразование
+**NB!** Следите за кавычками
+
+```{r}
+string4 <- "Ну вот 'так' вроде норм"
+string5 <- 'И "так" тоже'
+string4
+string5
+```
+
+Экранирование:
+
+```{r}
+string6 <- "Экранирование \"лишних\" кавычек"
+string6
+```
+
+* Печать строки
+
+Функции для печати строк вам, скорее всего, известны: `print`, `paste`, `paste0`, `cat`, `noquote`, `format`
+
+
+```{r}
+format(13.495902982, digits=5)
+```
+
+* Преобразование 
+
 ```{r}
 typeof(4:7)
+```
+
+```{r}
 as.character(4:7)
 ```
 
-* встроенные векторы
 ```{r}
-letters
-LETTERS
-month.name
+string7 <- (1:9) ^ 2
+toString (string7)
 ```
 
-* Создание рандомных строк
+Преобразование таблиц в строки
+
+**NB!** Функции `data.frame()`, `read.csv()`, `read.csv2()`, `read.table()` из base R по-умолчанию превращают строки в факторы. Чтобы этого избежать, необходимо указать аргумент `stringsAsFactors = FALSE`. 
+
+
+```{r}
+str(data.frame(letters[1:5], LETTERS[1:5]))
+```
+
+
+```{r}
+str(data.frame(letters[1:5], LETTERS[1:5], stringsAsFactors = FALSE))
+```
+
+* Генерация
+
+Генерация пустых строк
+
+```{r}
+character(3)
+```
+
+Генерация рандомных строк
+
 ```{r}
 set.seed(42)
 stri_rand_strings(n = 10, length = 5:14)
 ```
 
-* Перемешивает символы внутри строки
-```{r}
-stri_rand_shuffle("любя, съешь щипцы, — вздохнёт мэр, — кайф жгуч")
-stri_rand_shuffle(month.name)
-```
+Генерация псевдорандомных строк (классический текст-заполнитель Lorem ipsum)
 
-* Генерирует псевдорандомный текст ^[Lorem ipsum --- классический текст-заполнитель на основе трактата Марка Туллия Цицерона "О пределах добра и зла". Его используют, чтобы посмотреть, как страница смотриться, когда заполнена текстом]
 ```{r}
 stri_rand_lipsum(nparagraphs = 2)
 ```
 
-## Соединение и разделение строк
+* встроенные векторы
 
-Соединенить строки можно используя функцию `str_c()`, в которую, как и в функции `с()`, можно перечислять элементы через запятую:
 ```{r}
-tibble(upper = rev(LETTERS), smaller = letters) %>% 
-  mutate(merge = str_c(upper, smaller))
+letters
 ```
 
-Кроме того, если хочется, можно использовать особенный разделитель, указав его в аргументе `sep`:
-
 ```{r}
-tibble(upper = rev(LETTERS), smaller = letters) %>% 
-  mutate(merge = str_c(upper, smaller, sep = "_"))
+LETTERS
 ```
 
-Аналогичным образом, для разделение строки на подстроки можно использовать функцию `separate()`. Это функция разносит разделенные элементы строки в соответствующие столбцы. У функции три обязательных аргумента: `col` --- колонка, которую следует разделить, `into` --- вектор названий новых столбец, `sep` --- разделитель.
-
 ```{r}
-tibble(upper = rev(LETTERS), smaller = letters) %>% 
-  mutate(merge = str_c(upper, smaller, sep = "_")) %>% 
-  separate(col = merge, into = c("column_1", "column_2"), sep = "_")
+month.name
 ```
 
-Кроме того, есть инструмент `str_split()`, которая позволяет разбивать строки на подстроки, но возвращает *список*.
+* чтение из файла
 
-```{r}
-str_split(month.name, "r")
+Чтение таблицы 
+Функция `read_csv` взята из пакета  `readr`, который является частью `tidyverse`. Для чтения таблиц также есть функции `read_csv2()`, `read_tsv()` и `read_delim()`. В каких случаях они используются вы можете узнать в справке: `?read_csv2()`
+
+```{r, message=FALSE}
+sample <- read_csv("data/data_ficbook_untamed_sample.csv")
+head(sample)
+```
+
+Чтение текста
+Прочитать файл полностью можно с помощью функций из пакета `readr`: `read_file()` и `read_lines()`.
+**NB!** `read_file()` будет работать очень долго, если размер текста большой.
+
+```{r, message=FALSE}
+my_file <- read_file("data/Cox_Forshaw_WHy_E_equals_mc_squared_ocr.txt")
+my_file
 ```
 
 
 ## Количество символов
 
-### Подсчет количества символов
+* Подсчет
 
-![](images/5.01_str_length.png)
+Аналогом функции `nchar()` из базового R в пакете `stringr` является функция `str_length`.
+**NB!** Эта функция может давать неверные значения, так как подсчитывает количество кодовых точек, используемых для кодирования символа. Чаще всего одному символу соответствует одна кодовая точка, но может быть и больше.
+
+```{r}
+str_length(c("Hello", "", NA))
+```
+
+Также для подсчета количества знаков в строке можно использовать функцию `str_count`, которая позволяет также подсчитывать количество паттернов (об этом  см. пункт о поиске подстроки ниже). Таблица `tibble` - аналог `data.frame`, используемый в библиотеке `tidyverse`. 
+
 
 ```{r}
 tibble(mn = month.name) %>% 
   mutate(n_charactars = str_count(mn))
 ```
 
-### Подгонка количества символов
+* Приведение к желаемому количеству
 
-Можно обрезать строки, используя функцию `str_trunc()`:
+Иногда нам нужно соклатить строку до определенного количества символов. Это легко сделать с помощью функции `str_trinc()`. Например, можно сократить количество знаков в строке до 6 (по умолчанию индикатор сокращения - `ellipsis` - это многоточие):
 
-![](images/5.02_str_trunc.png)
 ```{r}
 tibble(mn = month.name) %>% 
-  mutate(mn_new = str_trunc(mn, 6))
+  mutate(mn_new = str_trunc(mn, width=6))
 ```
 
-Можно решить с какой стороны обрезать, используя аргумент `side`:
+Функция позволяет также изменить индикатор сокращения и определить, сокращаем мы строку за счет ее начала, середины или конца:
+
 ```{r}
 tibble(mn = month.name) %>% 
-  mutate(mn_new = str_trunc(mn, 6, side = "left"))
-tibble(mn = month.name) %>% 
-  mutate(mn_new = str_trunc(mn, 6, side = "center"))
+  mutate(mn_new = str_trunc(mn, 6, ellipsis = "-", side = "left"))
 ```
 
-Можно заменить многоточие, используя аргумент `ellipsis`:
-```{r}
-tibble(mn = month.name) %>% 
-  mutate(mn_new = str_trunc(mn, 3, ellipsis = ""))
-```
-
-Можно наоборот "раздуть" строку:
-
-![](images/5.03_str_pad.png)
+Обратная функция для "раздувания" строки - `str_pad`. По умолчанию это делается за счет пробелов " "
 
 ```{r}
 tibble(mn = month.name) %>% 
   mutate(mn_new = str_pad(mn, 10))
 ```
 
-Опять же есть аргумент `side`:
-```{r}
-tibble(mn = month.name) %>% 
-  mutate(mn_new = str_pad(mn, 10,  side = "right"))
-```
-
-Также можно выбрать, чем "раздувать строку":
+Аргументы аналогичны:
 
 ```{r}
 tibble(mn = month.name) %>% 
-  mutate(mn_new = str_pad(mn, 10,  pad = "."))
+  mutate(mn_new = str_pad(mn, 10,  pad = ".", side = "both"))
 ```
 
+Для форматирования строки в соответствии с определенной шириной и отступами используют функцию `str_wrap`. Например, попрорбуем представить первый параграф Lorem ipsum в виде строк с шириной не более 30 знаков (без переноса слов)
 
-```{block, type = "rmdtask"}
-На Pudding вышла [статья про английские пабы](https://pudding.cool/2019/10/pubs/). [Здесь](https://raw.githubusercontent.com/agricolamz/DS_for_DH/master/data/UK_pubs.csv) лежит немного обработанный датасет, которые они использовали. Визуализируйте 40 самых частотоных названий пабов в Великобритании, отложив по оси x количество символов, а по оси y -- количество баров с таким названием.
+```{r}
+some_txt <- stri_rand_lipsum(nparagraphs = 1)
+cat(str_wrap(some_txt, width = 30))
 ```
 
-```{r, echo=FALSE, message = FALSE}
-read_csv("https://raw.githubusercontent.com/agricolamz/DS_for_DH/master/data/UK_pubs.csv") %>% 
-  count(pub_name, sort = TRUE) %>% 
-  mutate(nchar = str_length(pub_name)) %>% 
-  slice(1:40) %>% 
-  ggplot(aes(nchar, n, label = pub_name))+
-  geom_point()+
-  ggrepel::geom_text_repel()+
-  labs(x = "number of symbols",
-       y = "number of bars",
-       titles = "40 most popular bar names in UK",
-       caption = "data from https://pudding.cool/2019/10/pubs/")
+Можно, например, указать отступ:
+
+```{r}
+cat(str_wrap(some_txt, width = 30, indent = 2), "\n")
+```
+
+Иногда в начале и/или конце строки присутствуют лишные пробелы, от которых нам хотелось бы избавиться. Для быстрого "отсечения" пробелов используют функцию `str_trim()`:
+
+```{r}
+raw_strings <- c("Эта ", " строка ", ", ", " имеет", " кучу", " пробелов ")
+
+#Можно указать, с какой стороны убирать пробелы
+str_trim(raw_strings, side = "left")
+
+#А можно убрать с обоих концов
+str_trim(raw_strings, side = "both")
 ```
 
 ## Сортировка
-Для сортировки существует базовая функция `sort()` и функция из `stringr` `str_sort()`:
+
+Вопрос выбора метода сортировки строк - не из самых простых. [Алгоритмов сортировки существует множество](https://www.youtube.com/watch?v=kPRA0W1kECg), скорость их работы отличается в зависимости от формата данных и способа их хранения. Для выбора алгоритма следует учитывать два аспекта: скорость его работы и объем необходимой памяти. 
+
+![](https://i.imgur.com/D0zb2Tm.png) 
+
+(с) [BigOcheatsheet] (https://www.bigocheatsheet.com/)
+
+Для расчета сложности алгоритмов используется О-нотация, которая, грубо говоря, оценивает скорость роста функции, описывающей работу этого алгоритма. 
+ 
+ 
+ ![](https://i.imgur.com/3ydrNff.png)
+ 
+ (с) [BigOcheatsheet] (https://www.bigocheatsheet.com/)
+ 
+
+Стандартное время работы алгоритмов сортировки - `O(nlogn)`, где `n` - это количество наблюдений (длина массива), однако для сортировки строк есть и более быстрые решения, например `MSD radix sort`, часто рекомендуемый для сортировки строк, со скоростью работы `O(kn)`, где `n` - это количество наблюдений, а `k` - количество разрядов. Визуализацию работы популярных алгоритмов сортировки можно увидеть [здесь](https://proglib.io/p/sort-gif/). В [этом видео](https://www.youtube.com/watch?v=6NwB5VFhM-Y) можно узнать, как начать разбираться в алгоритмах, если вам интересно. 
+
+Таким образом, для сортировки больших массивов строковых данных в базовом R можно использовать функцию `sort()` с указанием метода `radix sort`: `sort(..., method = "radix")`
+
+В пакете `stringr`для сортировки есть функции `str_sort` и `str_order`. Встроенный алгоритм сортировки в них не изменить, но зато можно задать локаль. 
 
 ```{r}
-unsorted_latin <- c("I", "♥", "N", "Y")
-sort(unsorted_latin)
-str_sort(unsorted_latin)
-str_sort(unsorted_latin, locale = "lt")
-unsorted_cyrillic <- c("я", "i", "ж")
-str_sort(unsorted_cyrillic)
-str_sort(unsorted_cyrillic, locale = "ru_UA")
+unsorted_strings <- c("a", "b", "ba", "e", "i", "б", "я")
+
+#english
+str_sort(unsorted_strings, locale = "en")
+
+#hawaiian
+str_sort(unsorted_strings, locale = "haw")
+
+#default
+str_sort(unsorted_strings)
+
+#ukranian
+str_sort(unsorted_strings, locale = "ru_UA")
+
 ```
 
-Список локалей на копмьютере можно посмотреть командой `stringi::stri_locale_list()`. Список всех локалей вообще приведен [на этой странице](https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes). Еще полезные команды: `stringi::stri_locale_info` и `stringi::stri_locale_set`.
+**NB!** Знайте [локаль](https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes) своего компьютера, от нее зависит порядок сортировки. Функция `stringi::stri_locale_list()` покажет вам список локалей на компьютере. Ознакомьтесь также с `stringi::stri_locale_info` и `stringi::stri_locale_set`
 
-Не углубляясь в [разнообразие алгоритмов сортировки](https://www.youtube.com/watch?v=BeoCbJPuvSE), отмечу, что алгоритм по-умолчанию хуже работает с большими данными:
 
-```{r, cache=TRUE}
-set.seed(42)
-huge <- sample(letters, 1e7, replace = TRUE)
-head(huge)
-system.time(
-  sort(huge)
-)
+## Конкатенация
 
-system.time(
-  sort(huge, method = "radix")
-)
+Конкатенация - это операция склеивания, сцепления. Функция `str_c` позволяет склеивать строки в одну строку.
 
-system.time(
-  str_sort(huge)
-)
+```{r}
+str_c("h", "e", "l", "l", "o")
 
-huge_tbl <- tibble(huge)
-system.time(
-  huge_tbl %>% 
-    arrange(huge)
-)
 ```
 
+Можно указать разделитель аргументом `sep`:
 
-Предварительный вывод: для больших данных -- `sort(..., method = "radix")`.
+```{r}
+str_c("h", "e", "l", "l", "o", sep="_")
 
-## Поиск подстроки
-Можно использовать функцию `str_detect()`:
+```
 
-![](images/5.04_str_detect.png)
+**NB!** NA выскакивают как NA, а пустые строки опускаются. Чтобы NA превратить в строку используйте `str_replace_na()`:
+
+
+```{r}
+x <- c("a", NA)
+str_c("префикс-", x, "-суффикс")
+
+str_c("префикс-", str_replace_na(x), "-суффикс")
+
+```
+
+Чтобы вектор строк превратить в одну строку воспользуйтесь аргументом `collapse`:
+```{r}
+x <- c("h", "e", "l", "l", "o")
+str_c(x)
+
+str_c(x, collapse = "_")
+
+```
+
+Обратная операция - разделение строк. Для этого можно использовать функции `separate()` или `str_split()`.
+
+Используйте `separate()` для разбиения колонки из таблицы на несколько колонок
+
+```{r}
+head(sample) %>% 
+  separate(col = author_link, into = c("column_1", "column_2", "author_id"), sep = "/")
+
+```
+
+Для преобразование строки в список из разделенных строк используйте `str_split()`. Например, если нам нужно узнать домен почты:
+
+```{r}
+dummy_emails <- c("andan@gmail.com", "icedone@mail.ru", "imdone@un.org")
+str_split(dummy_emails, "@")
+```
+
+Кроме того, иногда вам может помочь функция `str_split_fixed()`, если у вас есть список строк, которые вам нужно разбить на части, у этих строк есть определенный паттерн, по которому они составлены, и вы всегда знаете, на сколько частей нужно эти строки разбить:
+
+```{r}
+dummy_books <- c("1974_Carrie_Doubleday", "1975_Salem's_lot_Doubleday", "1977_The_Shining_Doubleday")
+#хотим список книг СМтивена Кингана 2 части
+str_split_fixed(dummy_books, pattern="_", n=2)
+```
+
+Но это не всегда хорошо работает, поэтому существуют регулярные выражения:
+```{r}
+str_split_fixed(dummy_books, pattern="_", n=3)
+```
+
+## Работа с подстрокой
+
+* Поиск подстроки
+
+Функция `str_detect()` ищет подстроку в строке и возвращает TRUE или FALSE:
 
 ```{r}
 tibble(mn = month.name) %>% 
   mutate(has_r = str_detect(mn, "r"))
 ```
 
-Кроме того, существует функция, которая возвращает индексы, а не значения `TRUE`/`FALSE`:
-![](images/5.05_str_which.png)
+А функция `str_which()` возвращает индекс элесента, в котором есть совпадение с подстрокой, которую ищут:
 
 ```{r}
+str_which(month.name, "r")
+```
+
+```{r}
+#фильтр по наличию подстроки
 tibble(mn = month.name) %>% 
   slice(str_which(mn, "r"))
 ```
 
-Также можно посчитать количество вхождений какой-то подстроки:
+Если нужно вернуть не индекс, а сам элемент, в котором есть подстрока, можно также использовать `str_subset`:
 
-![](images/5.06_str_count.png)
+```{r}
+str_subset(month.name, "r")
+```
+
+`str_count()` возвращает количество вхождений данной подстроки в строке:
+
+```{r}
+str_count(month.name, "r")
+```
+
+Также в зависимости от задачи, вам могут пригодиться функции `str_locate()` и `str_locate_all()`
+
+## Изменение строки
+
+Ну и самый сок, наиболее часто используемые функции связаны с преобразованием строк. Особенно популярны при "чистке" данных. 
+
+* Изменение регистра
+
+Все просто, для приведения всех букв к заглавным используется `str_to_upper()`
+
+```{r}
+str_to_upper(month.name)
+```
+
+Чаще всего все буквы приводят к прописным:
+
+
+```{r}
+str_to_lower(month.name)
+```
+
+Можно и так
+
+```{r}
+str_to_title(some_txt)
+```
+
+* Выделение подстроки
+
+Выделить подстроку из строки можно, указав индексы (`str_sub()`)...
 
 ```{r}
 tibble(mn = month.name) %>% 
-  mutate(has_r = str_count(mn, "r"))
+  mutate(mutate = str_sub(mn, start = 1, end = 3))
 ```
-
-## Изменение строк
-### Изменение регистра
-```{r}
-latin <- "tHe QuIcK BrOwN fOx JuMpS OvEr ThE lAzY dOg"
-cyrillic <- "лЮбЯ, сЪеШь ЩиПцЫ, — вЗдОхНёТ мЭр, — кАйФ жГуЧ"
-str_to_upper(latin)
-str_to_lower(cyrillic)
-str_to_title(latin)
-```
-
-### Выделение подстроки
-Подстроку в строке можно выделить двумя способами: по индексам функцией `str_sub()`, и по подстроке функцией `str_png()`.
-
-extract(images/5.07_str_sub.png)
 
 ```{r}
 tibble(mn = month.name) %>% 
-  mutate(mutate = str_sub(mn, start = 1, end = 2))
+  mutate(mutate = str_sub(mn, start = -3, end = -1))
 ```
 
-![](images/5.08_str_extract.png)      
+... или указав сам паттерн (подстроку) (`str_extract()`)
 
 ```{r}
 tibble(mn = month.name) %>% 
-  mutate(mutate = str_extract(mn, "r"))
+  mutate(mutate = str_extract(mn, "e"))
 ```
 
-По умолчанию функция `str_extract()` возвращает первое вхождение подстроки, соответствующей шаблону. Также существует функция `str_extract_all()`, которая возвращает все вхождения подстрок, соответствующих шаблону, однако возвращает объект типа список.
+Как видите, в некоторых словах несколько букв e, но функция возвратила лишь одну. Это потому что `str_extract()` возвращает только первое вхождение. Для того, чтобы вернуть все вхождения подстроки, используйте `str_extract_all()`. Вам вернется список.
 
 ```{r}
-str_extract_all(month.name, "r")
+str_extract_all(month.name, "e")
 ```
 
-### Замена подстроки
+* замена подстроки
 
-Существует функция `str_replace()`, которая позволяет заменить одну подстроку в строке на другую:
-
-![](images/5.11_str_replace.png)
+Функции `str_replace()` и `str_replace_all()` работают аналогично `str_extract()`, то есть первая заменчет только первое вхождение подстроки, а вторая заменяет все подстроки
 
 ```{r}
-tibble(mn = month.name) %>% 
-  mutate(mutate = str_replace(mn, "r", "R"))
+str_replace("September", "e", "E")
+str_replace_all("September", "e", "E")
 ```
 
-Как и другие функции `str_replace()` делает лишь одну замену, чтобы заменить все вхождения подстроки следует использовать функцию `str_replace_all()`:
+* Удаление подстроки
 
-![](images/5.12_str_replace_all.png)
+Аналогично работают `str_remove()` и `str_remove_all()`
 
 ```{r}
-tibble(mn = month.name) %>% 
-  mutate(mutate = str_replace_all(mn, "r", "R"))
+str_remove("September", "e")
+str_remove_all("September", "e")
 ```
 
-### Удаление подстроки
-Для удаления подстроки на основе шаблона, используется функция `str_remove()` и `str_remove_all()`
+* Транслитерация строк
+
+Пакет `stringi` позволяет производить транслитерацию строк. Методы можно посмотреть с помощью функции `stri_trans_list()`
 
 ```{r}
-tibble(month.name) %>% 
-  mutate(mutate = str_remove(month.name, "r"))
-tibble(month.name) %>% 
-  mutate(mutate = str_remove_all(month.name, "r"))
+x <- "фанфик"
+
+#транслитерация на английский - заметьте, не перевод
+stri_trans_general(x, "cyrillic-latin")
+
+#с английского на катакану
+stri_trans_general("fanfic", "Latin-Katakana")
+
+#с английского на хирагану
+stri_trans_general("fanfic", "Latin-Hiragana")
+
+#с английского на хангыль
+stri_trans_general("fanfic", "Latn-Hang")
 ```
 
-### Транслитерация строк
+## Пакеты для работы с текстовыми данными
 
-В пакете `stringi` сууществует достаточно много методов транслитераций строк, которые можно вывести командой `stri_trans_list()`. Вот пример использования некоторых из них:
+-определение языка
+-расстояние между строками
+-stylo
+-ner (extract names)
 
-```{r}
-stri_trans_general("stringi", "latin-cyrillic")
-stri_trans_general("сырники", "cyrillic-latin")
-stri_trans_general("stringi", "latin-greek")
-stri_trans_general("stringi", "latin-armenian")
+## Задания
+
+Итак
+
+![](https://i.imgur.com/wfdQPVQ.jpg)
+
+**Задание 1**
+Представьте, что у вас есть оцифрованный текст (тот, что вы уже загрузили в my_file). Вам необходимо произвести его очистку, пока что теми средствами, что вы успели изучить. Этот текст - отрывок из книги Брайаня Кокса и Джеффа Форшоу "Что такое E=mc^2 и зачем нам это знать". Текст на русском, почти не содержит формул(=ими можно пренебречь). в нем есть сноски и заголовки. 
+
+```{r, message=FALSE}
+my_file
 ```
 
-```{block, type = "rmdtask"}
-Вот два датасета:
+1. Имеет смысл разделить текст на параграфы по переносу строки `\n` `\r\n`. Это можно сделать с помощью `str_split()`. Не забудьте экранировать специальные символы!
+2. Приведите все строки к нижнему регистру.
+3. Необходимо избавиться от лишних табуляций `\t` и символов. Это текст на русском языке, нам же не нужны символы латинского алфавита? Лишние можно просто удалить или заменить на пробел.
+4. Вы точно удалили все ненужные символы? Составьте сортированный список всех символов. Это можно сделать, временно склеив обратно в единый текст все параграфы. Потом с помощью `str_split()` разделить все знаки по пустой строке "". У вас получится список, переделайте его в вектор! Из вектора можно составить таблицу частотности символов, а из нее вытащить список названий строк и отсортировать его. NB! Не удаляйте символ переноса строки "-", если хотите сделать п.6.    
+5. Проверьте длину строк. У вас есть пустые строки? Если есть, их можно удалить.
+6*. Задание со звездочкой, выполнение опционально. Теперь надо разобраться с переносами строк, которые есть в печатных книгах, но нет в электронных текстах. Можно использовать цикл if: если предыдущая строка оканчивается на "-", то создай новую строку, склеенную из предыдущей и этой. В противном случае, создай новую строку из предыдущей и этой, разделенную пробелом. Не забудьте обработать крайние значения (первая и последняя строки).
 
-* [список городов России](https://raw.githubusercontent.com/agricolamz/DS_for_DH/master/data/cities_of_russia.csv)
-* [частотный словарь русского языка [Шаров, Ляшевская 2011]](https://raw.githubusercontent.com/agricolamz/DS_for_DH/master/data/freq_dict_2011.csv)
+**Задание 2**
 
-Определите сколько городов называется обычным словом русского языка (например, город Орёл)? Не забудьте поменять ё на е.
+Подготовим наши таблицы с фанфиками к обработке. 
+
+```{r, message=FALSE}
+sample %>% print()
 ```
 
-```{r, cache=TRUE, include=FALSE, eval=FALSE}
-read_csv("https://raw.githubusercontent.com/agricolamz/DS_for_DH/master/data/cities_of_russia.csv") %>% 
-  mutate(city = str_to_lower(city),
-         city = str_replace_all(city, "ё", "е")) ->
-  cities
-
-read_tsv("https://raw.githubusercontent.com/agricolamz/DS_for_DH/master/data/freq_dict_2011.csv") %>% 
-  inner_join(cities, by = c("lemma" = "city")) %>% 
-  count(lemma)
-# 65
-```
+1. Посмотрите на столбец authors_link. Нам же не нужен рудимент "	/authors/", оставшийся после скрэппинга? Удалите его.
+2. ID автора гораздо легче использовать, чем его полный никнейм. Но у нас разное количество символов в ID. Нужно привести их к общей схеме, расширив строку до максимальной длины с помощью нулей, которые нужно вставить в начало строки.
+3. Аналогичные манипуляции предлагаю проделать с ID работы из графы "link"
+4*. Задание со звездочкой, выполнение опционально. Посмотрите на графу subtitle. Очевидно, у нас скачались отдельные главы фанфиков как отдельные фанфики. Нехорошо. Но! У нас также есть сборники фичков, которые и должны рассматриваться как отдельные фанфики (см. п. 13). Чем они отличаются? Наверное, наличием символов `"/"`, `"\"` или `"|"` в графе subtitle. Попробуйте соединить те тексты фичков, у которых совпадает ID и отсутствуют вышеперечисленные символы в названии. Количество лайков и страниц указывается для всего фанфика, а не для каждой главы, так что их можете не трогать.
 
 
-```{block, type = "rmdtask"}
-[Вот отсюда](https://raw.githubusercontent.com/agricolamz/DS_for_DH/master/data/zabolockiy_merknut_znaki_zodiaka.txt) можно скачать файл с текстом стихотворения Н. Заболоцкого "Меркнут знаки задиака". Посчитайте долю женских (ударение падает на **предпоследний** слог рифмующихся слов) и мужских (ударение падает на **последний** слог рифмующихся слов) рифм в стихотворении.
-```
+## Sources
 
-```{r, cache=TRUE, include=FALSE}
-text <- read_lines("https://raw.githubusercontent.com/agricolamz/DS_for_DH/master/data/zabolockiy_merknut_znaki_zodiaka.txt")
-tibble(text = text) %>% 
-  filter(text != "") %>% 
-  mutate(n_vowels = str_count(text, "[яёуеыаоэюиЯЁУЕЫАОЭЮИ]")) %>% 
-  count(n_vowels) %>% 
-  mutate(ratio = n/sum(n))
-```
+https://www.gastonsanchez.com/Handling_and_Processing_Strings_in_R.pdf
+https://agricolamz.github.io/DS_for_DH/
 
-
-```{block, type = "rmdtask"}
-В ходе анализа данных чаще всего бороться со строками и регулярными выражениями приходится в процессе обработки неаккуратнособранных анкет. Предлагаю обработать переменные `sex` и `age` [такой вот неудачно собранной анкеты](https://raw.githubusercontent.com/agricolamz/DS_for_DH/master/data/mad_questionary.csv) и построить следующий график:
-```
-
-![](images/mad_questionary_task.png)
-
-
-```{r cache=TRUE, include=FALSE}
-read_csv("https://raw.githubusercontent.com/agricolamz/DS_for_DH/master/data/mad_questionary.csv") %>% 
-  mutate(sex = str_replace_all(sex, "^[Жж].*", "женский"),
-         sex = str_replace_all(sex, "^[Мм].*", "мужской"),
-         age = str_remove_all(age, " лет"),
-         age = as.integer(age)) %>%
-  ggplot(aes(age, fill = sex))+
-  geom_dotplot(method = "histodot")+
-  scale_y_continuous(NULL, breaks = NULL) # чтобы убрать ось y
-```
-
-## Определение языка
-
-Для определения языка существует два пакета `cld2` (вероятностный) и `cld3` (нейросеть).
-
-```{r, cache=TRUE}
-udhr_24 <- read_csv("https://raw.githubusercontent.com/agricolamz/DS_for_DH/master/data/article_24_from_UDHR.csv")
-udhr_24
-cld2::detect_language(udhr_24$article_text)
-cld2::detect_language(udhr_24$article_text, lang_code = FALSE)
-cld3::detect_language(udhr_24$article_text)
-cld2::detect_language("Ты женат? Говорите ли по-английски?")
-cld3::detect_language("Ты женат? Говорите ли по-английски?")
-cld2::detect_language("Варкалось. Хливкие шорьки пырялись по наве, и хрюкотали зелюки, как мюмзики в мове.")
-cld3::detect_language("Варкалось. Хливкие шорьки пырялись по наве, и хрюкотали зелюки, как мюмзики в мове.")
-cld2::detect_language("Варчилось… Хлив'язкі тхурки викрули, свербчись навкрузі, жасумновілі худоки гривіли зехряки в чузі.")
-cld3::detect_language("Варчилось… Хлив'язкі тхурки викрули, свербчись навкрузі, жасумновілі худоки гривіли зехряки в чузі.")
-cld2::detect_language_mixed("Многие в нашей команде OpenDataScience занимаются state-of-the-art технологиями машинного обучения: DL-фреймворками, байесовскими методами машинного обучения, вероятностным программированием и не только.")
-cld3::detect_language_mixed("Многие в нашей команде OpenDataScience занимаются state-of-the-art технологиями машинного обучения: DL-фреймворками, байесовскими методами машинного обучения, вероятностным программированием и не только.")
-```
-
-## Расстояния между строками
-Существует много разных метрик для измерения расстояния между строками (см. <code>?&grave;stringdist-metrics&grave;</code>), в примерах используется расстояние Дамерау — Левенштейна. Данное расстояние получается при подсчете количества операций, которые нужно сделать, чтобы перевести одну строку в другую.
-
-* вставка ab → aNb
-* удаление aOb → ab
-* замена символа aOb → aNb
-* перестановка символов ab → ba
-
-```{r}
-library(stringdist)
-stringdist("корова","корова")
-stringdist("коровы", c("курица", "бык", "утка", "корова", "осел"))
-amatch(c("быки", "коровы"), c("курица", "бык", "утка", "корова", "осел"), maxDist = 2)
-```
-
-## Дополнительные задания:
-
-```{block, type = "rmdtask"}
-В [датасет](https://github.com/agricolamz/2020-2021-ds4dh/raw/master/data/realdonaldtrump.csv) записаны твиты Донольда Трампа взятые с [kaggle](https://www.kaggle.com/austinreese/trump-tweets). Постройте график рассеяния, которые показывает связь количества ретвитов и лайков. Чтобы убрать научную запись больших чисел используйте команду `options(scipen = 999)`.
-```
-
-```{r trump, echo = FALSE, cache=TRUE, message=FALSE}
-tr <- read_csv("https://github.com/agricolamz/2020-2021-ds4dh/raw/master/data/realdonaldtrump.csv")
-
-theme_set(theme_bw())
-
-options(scipen = 999)
-tr %>% 
-  ggplot(aes(retweets, favorites))+
-  geom_point(alpha = 0.2)+
-  labs(caption = "data from www.kaggle.com/austinreese/trump-tweets")
-```
-
-```{block, type = "rmdtask"}
-Постройте график рассеивания, который бы показывал связь с длиной твита во времени. Используя `geom_hline()`, наложите две линии: 140 символов и 280. Сделайте прозрачность 0.1.
-```
-
-```{r, echo = FALSE}
-tr %>% 
-  mutate(length = nchar(content)) %>% 
-  ggplot(aes(date, length))+
-  geom_point(alpha = 0.1)+
-  geom_hline(yintercept = 140, color = "red")+
-  geom_hline(yintercept = 280, color = "darkgreen")+
-  theme_bw()+
-  labs(caption = "data from www.kaggle.com/austinreese/trump-tweets",
-       x = "")
-```
-
-```{block, type = "rmdtask"}
-Постройте график рассеивания, который бы показывал связь с длиной твита во времени. Разбейте и раскрасьте твиты на основании наличия в них интернет ссылок.
-```
-
-```{r, echo = FALSE}
-tr %>% 
-  mutate(length = nchar(content),
-         link = str_detect(content, "https?")) %>% 
-  ggplot(aes(date, length, color = link))+
-  geom_point(alpha = 0.5)+
-  theme_bw()+
-  facet_wrap(~link) +
-  labs(caption = "data from www.kaggle.com/austinreese/trump-tweets",
-       x = "",
-       color = "with link")
-```
-
-```{block, type = "rmdtask"}
-Можно ли утверждать, что твиты со ссылками длиннее? Постройте вайолинплот, которые показывает распределение значений длины твитов в зависимости от наличия в них интернет ссылок.
-```
-
-```{r, echo = FALSE}
-tr %>% 
-  mutate(length = nchar(content),
-         link = str_detect(content, "https?")) %>% 
-  ggplot(aes(link, length, fill = link))+
-  geom_violin()+
-  theme_bw()+
-  labs(caption = "data from www.kaggle.com/austinreese/trump-tweets",
-       x = "",
-       fill = "with link")
-```
-
-
-```{block, type = "rmdtask"}
-Найдите твиты которые содержат корень america, которые встречаются больше одного раза, и фасетизируйте по таким словам.
-```
-
-```{r, echo = FALSE}
-tr %>% 
-  mutate(length = nchar(content),
-         america = str_extract(str_to_lower(content), "america\\w*\\W"),
-         america = str_sub(america, start = 1, end = -2)) %>% 
-  add_count(america, sort = TRUE) %>% 
-  filter(n > 1,
-         !is.na(america)) %>% 
-  ggplot(aes(date, length, color = america))+
-  geom_point()+
-  facet_wrap(~america)+
-  theme_bw()+
-  labs(caption = "data from www.kaggle.com/austinreese/trump-tweets",
-       x = "",
-       fill = "with link")
-```
