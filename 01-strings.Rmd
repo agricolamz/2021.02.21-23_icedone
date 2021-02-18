@@ -11,7 +11,7 @@ editor_options:
 * `stringr`, который входит в `tidyverse` ('str_')
 * `stringi` ('stri_')
 
-```{r libs}
+```{r libraries}
 library(tidyverse)
 library(stringi)
 ```
