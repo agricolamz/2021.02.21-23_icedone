@@ -226,6 +226,14 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>Например:</p>
 <pre><code>&lt;p class=&quot;story&quot; some_atribute = 42&gt;Жили-были три медведя.&lt;/p&gt;</code></pre>
 <p>Некоторые <code>html</code>-документ не являются статическими и изменяются после того, как страница была открыта при помощи JavaScript’а. Это динамичность может быть скрытой, когда пользователь лишь видит, как открывается страница, а иногда может быть завязана на некоторые действия пользователя. Информацию со статических страниц собирать достаточно просто и для этого нам хватит пакета <code>rvest</code>. C динамическими сайтами все иногда несколько сложнее. Иногда на динамических страницах можно отследить источник данных, посмотрев вкладку <code>Network</code> в режиме разработчика (ведь откуда-то эти данные появляются в браузере, правда?). Иногда необходимо делать <code>POST</code> и <code>GET</code> запросы, хранить cookies, и т. п. — все это можно сделать при помощи пакета <a href="https://cran.r-project.org/web/packages/httr/vignettes/quickstart.html"><code>httr</code></a>, а в самых сложных случаях (когда JavaScript JavaScript погоняет) поможет пакет <a href="https://docs.ropensci.org/RSelenium/"><code>RSelenium</code></a>.</p>
+<p><code>html</code>-тэгов очень много. Нам понадобятся:</p>
+<ul>
+<li><code>h1</code>, <code>h2</code>, <code>h3</code>… – заголовки разного уровня</li>
+<li><code>p</code> – абзац текста</li>
+<li><code>a</code> – ссылка</li>
+<li><code>div</code> – блок страницы (от слова <em>division</em>)</li>
+</ul>
+<p>Остальное смотрите, например, <a href="https://www.codecademy.com/articles/glossary-html">здесь</a>.</p>
 </div>
 <div id="работа-с-пакетом-rvest" class="section level2" number="4.2">
 <h2><span class="header-section-number">4.2</span> Работа с пакетом <code>rvest</code></h2>
@@ -277,10 +285,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
  [3] &quot;\n                                                                \n            \n            \n    \n\n                Тысяча белых перьев\n                                    29271&quot;                                  
  [4] &quot;\n                                                                \n            \n            \n    \n\n                Лисамайн\n                                    26082&quot;                                             
  [5] &quot;\n                                                                \n            \n            \n    \n\n                В Котисаари сегодня осень\n                                    26222&quot;                            
- [6] &quot;\n                                                                \n            \n            \n    \n\n                К вопросу об отношениях\n                                    20271&quot;                              
- [7] &quot;\n                                                                \n            \n            \n    \n\n                feels like home\n                                    20591&quot;                                      
+ [6] &quot;\n                                                                \n            \n            \n    \n\n                К вопросу об отношениях\n                                    20281&quot;                              
+ [7] &quot;\n                                                                \n            \n            \n    \n\n                feels like home\n                                    20621&quot;                                      
  [8] &quot;\n                                                                \n            \n            \n    \n\n                Weihnachten\n                                    21621&quot;                                          
- [9] &quot;\n                                                                \n            \n            \n    \n\n                Снежный принц для Владыки\n                                    16892&quot;                            
+ [9] &quot;\n                                                                \n            \n            \n    \n\n                Снежный принц для Владыки\n                                    16912&quot;                            
 [10] &quot;\n                                                                \n            \n            \n    \n\n                К алтарю \n                                    2115&quot;                                             
 [11] &quot;\n                                                                \n            \n            \n    \n\n                Гранатовые соски Чон Чонгука\n                                    1727&quot;                          
 [12] &quot;\n                                                                \n            \n            \n    \n\n                Сониум\n                                    26322&quot;                                               
@@ -291,37 +299,37 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 [17] &quot;\n                                                                \n            \n            \n    \n\n                Светлячок\n                                    12621&quot;                                            
 [18] &quot;\n                                                                \n            \n            \n    \n\n                Миша и опер Медведев\n                                    122313&quot;                                
 [19] &quot;\n                                                                \n            \n            \n    \n\n                Saint Allan&#39;s Night\n                                    14542&quot;                                  
-[20] &quot;\n                                                                \n            \n            \n    \n\n                Deadlock\n                                    688254&quot;                                            
-[21] &quot;\n                                                                \n            \n            \n    \n\n                Три месяца, ноль дней и ноль часов\n                                    1250&quot;                    
+[20] &quot;\n                                                                \n            \n            \n    \n\n                Deadlock\n                                    688454&quot;                                            
+[21] &quot;\n                                                                \n            \n            \n    \n\n                Три месяца, ноль дней и ноль часов\n                                    1290&quot;                    
 [22] &quot;\n                                                                \n            \n            \n    \n\n                Волчье\n                                    15692&quot;                                               
 [23] &quot;\n                                                                \n            \n            \n    \n\n                the union is our only strength\n                                    1101&quot;                        
 [24] &quot;\n                                                                \n            \n            \n    \n\n                soon, he is going to be my lover\n                                    1027&quot;                      
 [25] &quot;\n                                                                \n            \n            \n    \n\n                Знание — сила!\n                                    415720&quot;                                      
-[26] &quot;\n                                                                \n            \n            \n    \n\n                Кабинет 69.\n                                    2702&quot;                                           
-[27] &quot;\n                                                                \n            \n            \n    \n\n                Район спальный \n                                    10212&quot;                                      
-[28] &quot;\n                                                                \n            \n            \n    \n\n                С любовью, розовый\n                                    9882&quot;                                    
-[29] &quot;\n                                                                \n            \n            \n    \n\n                У меня на тебя аллергия \n                                    941&quot;                               
+[26] &quot;\n                                                                \n            \n            \n    \n\n                Кабинет 69.\n                                    2704&quot;                                           
+[27] &quot;\n                                                                \n            \n            \n    \n\n                Район спальный \n                                    10222&quot;                                      
+[28] &quot;\n                                                                \n            \n            \n    \n\n                С любовью, розовый\n                                    9902&quot;                                    
+[29] &quot;\n                                                                \n            \n            \n    \n\n                У меня на тебя аллергия \n                                    943&quot;                               
 [30] &quot;\n                                                                \n            \n            \n    \n\n                Выбор Тристана\n                                    23476&quot;                                       
-[31] &quot;\n                                                                \n            \n            \n    \n\n                Я больше не облажаюсь, старлей...\n                                    10282&quot;                    
+[31] &quot;\n                                                                \n            \n            \n    \n\n                Я больше не облажаюсь, старлей...\n                                    10302&quot;                    
 [32] &quot;\n                                                                \n            \n            \n    \n\n                Хочу детей от друга\n                                    17601&quot;                                  
-[33] &quot;\n                                                                \n            \n            \n    \n\n                Привет, Джимми!\n                                    8192&quot;                                       
+[33] &quot;\n                                                                \n            \n            \n    \n\n                Привет, Джимми!\n                                    8212&quot;                                       
 [34] &quot;\n                                                                \n            \n            \n    \n\n                Влюблённый Шекспир в Городе грехов\n                                    8112&quot;                    
 [35] &quot;\n                                                                \n            \n            \n    \n\n                fuck me, bestie\n                                    859&quot;                                        
-[36] &quot;\n                                                                \n            \n            \n    \n\n                r/relationships\n                                    9321&quot;                                       
+[36] &quot;\n                                                                \n            \n            \n    \n\n                r/relationships\n                                    9331&quot;                                       
 [37] &quot;\n                                                                \n            \n            \n    \n\n                Stuck on you\n                                    6981&quot;                                          
 [38] &quot;\n                                                                \n            \n            \n    \n\n                Кукольные игры\n                                    694&quot;                                         
 [39] &quot;\n                                                                \n            \n            \n    \n\n                Креативщик\n                                    18211&quot;                                           
-[40] &quot;\n                                                                \n            \n            \n    \n\n                Лесная ягода \n                                    1908&quot;                                         
-[41] &quot;\n                                                                \n            \n            \n    \n\n                Не зная, как, когда или откуда\n                                    701&quot;                         
+[40] &quot;\n                                                                \n            \n            \n    \n\n                Лесная ягода \n                                    1910&quot;                                         
+[41] &quot;\n                                                                \n            \n            \n    \n\n                Не зная, как, когда или откуда\n                                    702&quot;                         
 [42] &quot;\n                                                                \n            \n            \n    \n\n                Братья\n                                    316311&quot;                                              
-[43] &quot;\n                                                                \n            \n            \n    \n\n                Истинность солнца\n                                    16725&quot;                                    
+[43] &quot;\n                                                                \n            \n            \n    \n\n                Истинность солнца\n                                    16745&quot;                                    
 [44] &quot;\n                                                                \n            \n            \n    \n\n                at the end of everything\n                                    632&quot;                               
 [45] &quot;\n                                                                \n            \n            \n    \n\n                Алаймент\n                                    435766&quot;                                            
-[46] &quot;\n                                                                \n            \n            \n    \n\n                my furry\n                                    855&quot;                                               
-[47] &quot;\n                                                                \n            \n            \n    \n\n                Предсказанному верить, или Чему быть, того не миновать\n                                    5952&quot;
-[48] &quot;\n                                                                \n            \n            \n    \n\n                Я буду твоим дождем\n                                    19031&quot;                                  
-[49] &quot;\n                                                                \n            \n            \n    \n\n                Бывшие\n                                    22252&quot;                                               
-[50] &quot;\n                                                                \n            \n            \n    \n\n                Фантастические зануды и где они обитают\n                                    5933&quot;               
+[46] &quot;\n                                                                \n            \n            \n    \n\n                my furry\n                                    856&quot;                                               
+[47] &quot;\n                                                                \n            \n            \n    \n\n                Предсказанному верить, или Чему быть, того не миновать\n                                    5972&quot;
+[48] &quot;\n                                                                \n            \n            \n    \n\n                Я буду твоим дождем\n                                    19051&quot;                                  
+[49] &quot;\n                                                                \n            \n            \n    \n\n                Бывшие\n                                    22262&quot;                                               
+[50] &quot;\n                                                                \n            \n            \n    \n\n                Фантастические зануды и где они обитают\n                                    5943&quot;               
 [51] &quot;Войдите в аккаунт&quot;                                                                                                                                                                                                       </code></pre>
 <p>Стоит почистить:</p>
 <div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="сбор-данных-из-интернета-rvest.html#cb11-1" aria-hidden="true" tabindex="-1"></a>source <span class="sc">%&gt;%</span> </span>
@@ -333,10 +341,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
  [3] &quot;\n \n \n \n \n\n Тысяча белых перьев\n 29271&quot;                                  
  [4] &quot;\n \n \n \n \n\n Лисамайн\n 26082&quot;                                             
  [5] &quot;\n \n \n \n \n\n В Котисаари сегодня осень\n 26222&quot;                            
- [6] &quot;\n \n \n \n \n\n К вопросу об отношениях\n 20271&quot;                              
- [7] &quot;\n \n \n \n \n\n feels like home\n 20591&quot;                                      
+ [6] &quot;\n \n \n \n \n\n К вопросу об отношениях\n 20281&quot;                              
+ [7] &quot;\n \n \n \n \n\n feels like home\n 20621&quot;                                      
  [8] &quot;\n \n \n \n \n\n Weihnachten\n 21621&quot;                                          
- [9] &quot;\n \n \n \n \n\n Снежный принц для Владыки\n 16892&quot;                            
+ [9] &quot;\n \n \n \n \n\n Снежный принц для Владыки\n 16912&quot;                            
 [10] &quot;\n \n \n \n \n\n К алтарю \n 2115&quot;                                             
 [11] &quot;\n \n \n \n \n\n Гранатовые соски Чон Чонгука\n 1727&quot;                          
 [12] &quot;\n \n \n \n \n\n Сониум\n 26322&quot;                                               
@@ -347,37 +355,37 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 [17] &quot;\n \n \n \n \n\n Светлячок\n 12621&quot;                                            
 [18] &quot;\n \n \n \n \n\n Миша и опер Медведев\n 122313&quot;                                
 [19] &quot;\n \n \n \n \n\n Saint Allan&#39;s Night\n 14542&quot;                                  
-[20] &quot;\n \n \n \n \n\n Deadlock\n 688254&quot;                                            
-[21] &quot;\n \n \n \n \n\n Три месяца, ноль дней и ноль часов\n 1250&quot;                    
+[20] &quot;\n \n \n \n \n\n Deadlock\n 688454&quot;                                            
+[21] &quot;\n \n \n \n \n\n Три месяца, ноль дней и ноль часов\n 1290&quot;                    
 [22] &quot;\n \n \n \n \n\n Волчье\n 15692&quot;                                               
 [23] &quot;\n \n \n \n \n\n the union is our only strength\n 1101&quot;                        
 [24] &quot;\n \n \n \n \n\n soon, he is going to be my lover\n 1027&quot;                      
 [25] &quot;\n \n \n \n \n\n Знание — сила!\n 415720&quot;                                      
-[26] &quot;\n \n \n \n \n\n Кабинет 69.\n 2702&quot;                                           
-[27] &quot;\n \n \n \n \n\n Район спальный \n 10212&quot;                                      
-[28] &quot;\n \n \n \n \n\n С любовью, розовый\n 9882&quot;                                    
-[29] &quot;\n \n \n \n \n\n У меня на тебя аллергия \n 941&quot;                               
+[26] &quot;\n \n \n \n \n\n Кабинет 69.\n 2704&quot;                                           
+[27] &quot;\n \n \n \n \n\n Район спальный \n 10222&quot;                                      
+[28] &quot;\n \n \n \n \n\n С любовью, розовый\n 9902&quot;                                    
+[29] &quot;\n \n \n \n \n\n У меня на тебя аллергия \n 943&quot;                               
 [30] &quot;\n \n \n \n \n\n Выбор Тристана\n 23476&quot;                                       
-[31] &quot;\n \n \n \n \n\n Я больше не облажаюсь, старлей...\n 10282&quot;                    
+[31] &quot;\n \n \n \n \n\n Я больше не облажаюсь, старлей...\n 10302&quot;                    
 [32] &quot;\n \n \n \n \n\n Хочу детей от друга\n 17601&quot;                                  
-[33] &quot;\n \n \n \n \n\n Привет, Джимми!\n 8192&quot;                                       
+[33] &quot;\n \n \n \n \n\n Привет, Джимми!\n 8212&quot;                                       
 [34] &quot;\n \n \n \n \n\n Влюблённый Шекспир в Городе грехов\n 8112&quot;                    
 [35] &quot;\n \n \n \n \n\n fuck me, bestie\n 859&quot;                                        
-[36] &quot;\n \n \n \n \n\n r/relationships\n 9321&quot;                                       
+[36] &quot;\n \n \n \n \n\n r/relationships\n 9331&quot;                                       
 [37] &quot;\n \n \n \n \n\n Stuck on you\n 6981&quot;                                          
 [38] &quot;\n \n \n \n \n\n Кукольные игры\n 694&quot;                                         
 [39] &quot;\n \n \n \n \n\n Креативщик\n 18211&quot;                                           
-[40] &quot;\n \n \n \n \n\n Лесная ягода \n 1908&quot;                                         
-[41] &quot;\n \n \n \n \n\n Не зная, как, когда или откуда\n 701&quot;                         
+[40] &quot;\n \n \n \n \n\n Лесная ягода \n 1910&quot;                                         
+[41] &quot;\n \n \n \n \n\n Не зная, как, когда или откуда\n 702&quot;                         
 [42] &quot;\n \n \n \n \n\n Братья\n 316311&quot;                                              
-[43] &quot;\n \n \n \n \n\n Истинность солнца\n 16725&quot;                                    
+[43] &quot;\n \n \n \n \n\n Истинность солнца\n 16745&quot;                                    
 [44] &quot;\n \n \n \n \n\n at the end of everything\n 632&quot;                               
 [45] &quot;\n \n \n \n \n\n Алаймент\n 435766&quot;                                            
-[46] &quot;\n \n \n \n \n\n my furry\n 855&quot;                                               
-[47] &quot;\n \n \n \n \n\n Предсказанному верить, или Чему быть, того не миновать\n 5952&quot;
-[48] &quot;\n \n \n \n \n\n Я буду твоим дождем\n 19031&quot;                                  
-[49] &quot;\n \n \n \n \n\n Бывшие\n 22252&quot;                                               
-[50] &quot;\n \n \n \n \n\n Фантастические зануды и где они обитают\n 5933&quot;               
+[46] &quot;\n \n \n \n \n\n my furry\n 856&quot;                                               
+[47] &quot;\n \n \n \n \n\n Предсказанному верить, или Чему быть, того не миновать\n 5972&quot;
+[48] &quot;\n \n \n \n \n\n Я буду твоим дождем\n 19051&quot;                                  
+[49] &quot;\n \n \n \n \n\n Бывшие\n 22262&quot;                                               
+[50] &quot;\n \n \n \n \n\n Фантастические зануды и где они обитают\n 5943&quot;               
 [51] &quot;Войдите в аккаунт&quot;                                                             </code></pre>
 <p>Ага теперь видно, что к нам в заголовки затесалось предложение войти в аккаунт. Пока просто удалим.</p>
 <div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="сбор-данных-из-интернета-rvest.html#cb13-1" aria-hidden="true" tabindex="-1"></a>source <span class="sc">%&gt;%</span> </span>
@@ -391,10 +399,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
  [3] &quot;Тысяча белых перьев 29271&quot;                                  
  [4] &quot;Лисамайн 26082&quot;                                             
  [5] &quot;В Котисаари сегодня осень 26222&quot;                            
- [6] &quot;К вопросу об отношениях 20271&quot;                              
- [7] &quot;feels like home 20591&quot;                                      
+ [6] &quot;К вопросу об отношениях 20281&quot;                              
+ [7] &quot;feels like home 20621&quot;                                      
  [8] &quot;Weihnachten 21621&quot;                                          
- [9] &quot;Снежный принц для Владыки 16892&quot;                            
+ [9] &quot;Снежный принц для Владыки 16912&quot;                            
 [10] &quot;К алтарю  2115&quot;                                             
 [11] &quot;Гранатовые соски Чон Чонгука 1727&quot;                          
 [12] &quot;Сониум 26322&quot;                                               
@@ -405,37 +413,37 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 [17] &quot;Светлячок 12621&quot;                                            
 [18] &quot;Миша и опер Медведев 122313&quot;                                
 [19] &quot;Saint Allan&#39;s Night 14542&quot;                                  
-[20] &quot;Deadlock 688254&quot;                                            
-[21] &quot;Три месяца, ноль дней и ноль часов 1250&quot;                    
+[20] &quot;Deadlock 688454&quot;                                            
+[21] &quot;Три месяца, ноль дней и ноль часов 1290&quot;                    
 [22] &quot;Волчье 15692&quot;                                               
 [23] &quot;the union is our only strength 1101&quot;                        
 [24] &quot;soon, he is going to be my lover 1027&quot;                      
 [25] &quot;Знание — сила! 415720&quot;                                      
-[26] &quot;Кабинет 69. 2702&quot;                                           
-[27] &quot;Район спальный  10212&quot;                                      
-[28] &quot;С любовью, розовый 9882&quot;                                    
-[29] &quot;У меня на тебя аллергия  941&quot;                               
+[26] &quot;Кабинет 69. 2704&quot;                                           
+[27] &quot;Район спальный  10222&quot;                                      
+[28] &quot;С любовью, розовый 9902&quot;                                    
+[29] &quot;У меня на тебя аллергия  943&quot;                               
 [30] &quot;Выбор Тристана 23476&quot;                                       
-[31] &quot;Я больше не облажаюсь, старлей... 10282&quot;                    
+[31] &quot;Я больше не облажаюсь, старлей... 10302&quot;                    
 [32] &quot;Хочу детей от друга 17601&quot;                                  
-[33] &quot;Привет, Джимми! 8192&quot;                                       
+[33] &quot;Привет, Джимми! 8212&quot;                                       
 [34] &quot;Влюблённый Шекспир в Городе грехов 8112&quot;                    
 [35] &quot;fuck me, bestie 859&quot;                                        
-[36] &quot;r/relationships 9321&quot;                                       
+[36] &quot;r/relationships 9331&quot;                                       
 [37] &quot;Stuck on you 6981&quot;                                          
 [38] &quot;Кукольные игры 694&quot;                                         
 [39] &quot;Креативщик 18211&quot;                                           
-[40] &quot;Лесная ягода  1908&quot;                                         
-[41] &quot;Не зная, как, когда или откуда 701&quot;                         
+[40] &quot;Лесная ягода  1910&quot;                                         
+[41] &quot;Не зная, как, когда или откуда 702&quot;                         
 [42] &quot;Братья 316311&quot;                                              
-[43] &quot;Истинность солнца 16725&quot;                                    
+[43] &quot;Истинность солнца 16745&quot;                                    
 [44] &quot;at the end of everything 632&quot;                               
 [45] &quot;Алаймент 435766&quot;                                            
-[46] &quot;my furry 855&quot;                                               
-[47] &quot;Предсказанному верить, или Чему быть, того не миновать 5952&quot;
-[48] &quot;Я буду твоим дождем 19031&quot;                                  
-[49] &quot;Бывшие 22252&quot;                                               
-[50] &quot;Фантастические зануды и где они обитают 5933&quot;               
+[46] &quot;my furry 856&quot;                                               
+[47] &quot;Предсказанному верить, или Чему быть, того не миновать 5972&quot;
+[48] &quot;Я буду твоим дождем 19051&quot;                                  
+[49] &quot;Бывшие 22262&quot;                                               
+[50] &quot;Фантастические зануды и где они обитают 5943&quot;               
 [51] &quot;Войдите в аккаунт&quot;                                          </code></pre>
 <p>Теперь попробуем сделать таблицу и уберем цифры в конце:</p>
 <div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="сбор-данных-из-интернета-rvest.html#cb15-1" aria-hidden="true" tabindex="-1"></a>source <span class="sc">%&gt;%</span> </span>
