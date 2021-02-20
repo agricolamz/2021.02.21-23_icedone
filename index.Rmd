@@ -15,3 +15,21 @@ biblio-style: apalike
 
 Материалы для курса зимней школы Анализа данных: скрейпинг и анализ текстовых данных.
 
+Пакеты:
+
+```{r, eval = FALSE}
+install.packages(c("tidyverse", 
+                   "stringi", 
+                   "data.table", 
+                   "rvest", 
+                   "gutenbergr", 
+                   "tidytext", 
+                   "wordcloud", 
+                   "tm", 
+                   "wesanderson", 
+                   "udpipe", 
+                   "ggwordcloud", 
+                   "igraph",
+                   "ggraph", 
+                   "stopwords"))
+```

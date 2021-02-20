@@ -15,73 +15,64 @@ theme_set(theme_bw())
 
 Для работы мы воспользуемся двумя датасетами:
 
-* Рассказы М. Зощенко
+* Фэндом Мерлин
 
-```{r,message=FALSE}
-zo <- read_csv("https://raw.githubusercontent.com/agricolamz/2020_HSE_DPO/master/data/zoshenko.csv")
-zo
+
+```{r get_merlin, include=FALSE}
+me <- read_csv("~/work/scripts/r/data_ficbook/data_ficbook_merlin.csv", n_max = 1000)
 ```
 
-* Курс начертательной геометрии под редакцией В.Гордона
-
-```{r,message=FALSE}
-geom <- read_csv("https://raw.githubusercontent.com/agricolamz/2020_HSE_DPO/master/data/gordon_geometry.csv")
+```{r, eval=FALSE}
+me <- read_csv("data_ficbook_merlin.csv")
+me
 ```
 
-Для начала лемматизируем полуичвшиеся тексты:
+* Фэндом 30 seconds to mars
 
-```{r udpipe, cache=TRUE}
+```{r, eval=FALSE}
+mars30 <- read_csv("data_ficbook_30_seconds_to_mars.csv")
+mars30
+```
+
+Возьмем выборку в 50 фанфиков (на моем компьютере это обрабатовалось минуты 4), соединим, лемматизируем и уберем стопслова.
+
+```{r lemmatize, eval=FALSE}
+library(stopwords)
 library(udpipe)
 rus <- udpipe_load_model("russian-syntagrus-ud-2.4-190531.udpipe")
-geom_tokenized <- udpipe(geom, object = rus)
-zo_tokenized <- udpipe(zo, object = rus)
-```
 
-Уберем стопслова и леммы, содержащие цифры и знаки препинания
+set.seed(42)
+me %>% 
+  sample_n(50) %>% 
+  rename(doc_id = subtitle) %>% 
+  udpipe(object = rus, parallel.cores	= 7) %>% 
+  mutate(fandom = "merlin") ->
+  me_sample
 
-```{r}
-library(stopwords)
-sw <- tibble(lemma = stopwords(language = "ru"))
+set.seed(42)
+mars30 %>% 
+  sample_n(50) %>% 
+  rename(doc_id = subtitle) %>% 
+  udpipe(object = rus, parallel.cores	= 7) %>% 
+  mutate(fandom = "mars30") ->
+  mars30_sample
 
-geom_tokenized %>% 
-  bind_rows(zo_tokenized) %>% 
+me_sample %>% 
+  bind_rows(mars30_sample) %>% 
   filter(!str_detect(lemma, "\\W|\\d")) %>% 
-  anti_join(sw) %>% 
-  select(doc_id, sentence_id, lemma) ->
+  anti_join(tibble(lemma = stopwords(language = "ru"))) %>% 
+  select(doc_id, sentence_id, lemma, fandom) ->
   all_texts
 all_texts
 ```
 
+```{r, include=FALSE}
+load("data/all_texts.RData")
+```
+
 
 ```{block, type = "rmdtask"}
-Используйте библиотеку `gutenbergr` и скачайте "Чувство и чувствительность"(Sense and Sensibility, gutenberg_id = 161)	и "Гордость и предубеждение" ("Pride and Prejudice", gutenberg_id = 1342). Приведите тексты к tidy формату и уберите стопслова (английские стопслова есть в переменной `stop_words` пакета `tidytext`).
-```
-
-```{r, include=FALSE}
-library(gutenbergr)
-library(tidytext)
-austin <- gutenberg_download(c(161, 1342), mirror = "http://mirrors.xmission.com/gutenberg/")
-
-austin %>% 
-  unnest_tokens("word", text) %>% 
-  anti_join(stop_words) ->
-  austin_form  
-
-austin_form %>% 
-  count(gutenberg_id) ->
-  answers
-```
-
-* Приведите, сколько получилось слов в романе "Чувство и чувствительность" после удаления стопслов:
-```{r, echo=FALSE, results="asis"}
-library(checkdown)
-check_question(answers$n[1])
-```
-
-* Приведите, сколько получилось слов в романе "Гордость и предубеждение" после удаления стопслов:
-```{r, echo=FALSE, results="asis"}
-library(checkdown)
-check_question(answers$n[2])
+Повторите эти действия с сэмплами из других фандомов. Лучше использовать высокорейтинговые фанфики.
 ```
 
 ## tf-idf
@@ -91,68 +82,51 @@ tf-idf --- важная мера, которая позволяет выделя
 $$tf = \frac{количество\ употреблений\ единицы\ в\ тексте}{количество\ единиц\ в тексте}$$
 $$idf = log\left(\frac{количество\ документов\ в\ корпусе}{количество\ документов\ с\ исследуемой\ единицей}\right)$$
 $$TfIdf = tf \times idf$$
+Для начала нарисуем топ 10 слов в обоих фандомах:
+
+```{r}
+library(tidytext)
+all_texts %>% 
+  count(lemma, fandom) %>% 
+  mutate(lemma = reorder_within(lemma, n, fandom)) %>% 
+  group_by(fandom) %>% 
+  top_n(10) %>% 
+  ggplot(aes(n, lemma))+
+  geom_col()+
+  facet_wrap(~fandom, scales = "free")+
+  scale_y_reordered()
+```
+
+А теперь сравним получившееся с мерой tf-idf:
 
 ```{r, fig.height=10, fig.width=14, message=FALSE}
 library(tidytext)
 all_texts %>% 
-  count(doc_id, lemma) %>% 
-  bind_tf_idf(lemma, doc_id, n) %>% 
-  arrange(tf_idf) %>% 
-  group_by(doc_id) %>% 
-  top_n(5) %>% 
-  ungroup() %>% 
-  mutate(lemma = reorder_within(lemma, tf_idf, doc_id)) %>% 
+  count(lemma, fandom) %>% 
+  bind_tf_idf(lemma, fandom, n) %>% 
+  group_by(fandom) %>% 
+  top_n(10) %>% 
+  mutate(lemma = reorder_within(lemma, tf_idf, fandom)) %>% 
   ggplot(aes(tf_idf, lemma))+
   geom_col()+
-  facet_wrap(~doc_id, scales = "free")+
-  scale_y_reordered()
-```
-
-Давайте попробуем посчитать всего Зощенко одним корпусом:
-
-```{r}
-all_texts %>% 
-  mutate(doc_id = ifelse(doc_id != "gordon_geometry", "zoshenko", "gordon_geometry")) %>% 
-  count(doc_id, lemma) %>% 
-  bind_tf_idf(lemma, doc_id, n) %>% 
-  arrange(tf_idf) %>% 
-  group_by(doc_id) %>% 
-  top_n(20) %>% 
-  ungroup() %>% 
-  mutate(lemma = reorder_within(lemma, tf_idf, doc_id)) %>% 
-  ggplot(aes(tf_idf, lemma))+
-  geom_col()+
-  facet_wrap(~doc_id, scales = "free")+
+  facet_wrap(~fandom, scales = "free")+
   scale_y_reordered()
 ```
 
 ```{block, type = "rmdtask"}
-Используя созданную ранее переменную с текстами Джейн Остин без стопслов, выделите по 20 слов, важных для каждого романа.
-```
-
-```{r, echo = FALSE, message=FALSE}
-austin_form %>% 
-  count(gutenberg_id, word) %>% 
-  bind_tf_idf(word, gutenberg_id, n) %>% 
-  arrange(tf_idf) %>% 
-  group_by(gutenberg_id) %>% 
-  top_n(20) %>% 
-  ungroup() %>% 
-  mutate(word = reorder_within(word, tf_idf, gutenberg_id)) %>% 
-  ggplot(aes(tf_idf, word))+
-  geom_col()+
-  facet_wrap(~gutenberg_id, scales = "free")+
-  scale_y_reordered()
+Повторите со своей выборкой фанфиков. Лучше использовать высокорейтинговые.
 ```
 
 ## Предиктивный ввод текста
 
-На прошлом занятии мы разобрались, что пакет `tidytext` позволяет делить не только на отдльные слова, но и смотреть на биграммы. Частотность биграмм можно использовать в подсказке слова, которую мы видим в наших телефонах:
+На прошлых занятиях мы разобрались, что пакет `tidytext` позволяет делить не только на отдльные слова, но и смотреть на биграммы. Частотность биграмм можно использовать в подсказке слова, которую мы видим в наших телефонах:
 
 ```{r, warning=FALSE}
-zo %>% 
+set.seed(42)
+me %>% 
+  sample_n(50) %>% 
   unnest_tokens("bigram", text, token = "ngrams", n = 2) %>% 
-  separate(bigram, into = c("word_1", "word_2")) %>% 
+  separate(bigram, into = c("word_1", "word_2"), " ") %>% 
   count(word_1, word_2, sort = TRUE) ->
   bigrams
 ```
@@ -164,58 +138,43 @@ bigrams %>%
   filter(word_1 == "однажды")
 
 bigrams %>% 
-  filter(word_1 == "днем")
+  filter(word_1 == "мерлин")
 
 bigrams %>% 
-  filter(word_1 == "присела")
+  filter(word_1 == "не")
 
 bigrams %>% 
-  filter(word_1 == "ждет")
+  filter(word_1 == "мог")
 
 bigrams %>% 
-  filter(word_1 == "а") %>% 
+  filter(word_1 == "понять") %>% 
   head()
 
 bigrams %>% 
-  filter(word_1 == "я") %>% 
+  filter(word_1 == "что") %>% 
   head()
 
 bigrams %>% 
-  filter(word_1 == "говорю") %>% 
+  filter(word_1 == "он") %>% 
   head()
 
 bigrams %>% 
-  filter(word_1 == "не") %>% 
+  filter(word_1 == "снова") %>% 
   head()
 
 bigrams %>% 
-  filter(word_1 == "могу") %>% 
+  filter(word_1 == "попытался") %>% 
+  head()
+
+bigrams %>% 
+  filter(word_1 == "встать") %>% 
   head()
 ```
 
-Вот мы и получили предложение "Однажды днем присела ждет, а я говорю: 'не могу'". На большом корпусе результаты будут лучше, но легко предсатвить, как сделать из этого рабочую функцию. Можно переиначить задачу и работать с символами, тогда это будет ближе к T9 на современных телефонах.
-
-
-```{r, include = FALSE}
-austin %>% 
-  unnest_tokens("bigram", text, token = "ngrams", n = 2) %>% 
-  separate(bigram, into = c("word_1", "word_2")) %>% 
-  count(word_1, word_2) ->
-  bigrams
-
-bigrams %>% 
-  filter(word_1 == "should") %>% 
-  top_n(6) %>% 
-  arrange(-n)
-```
-
+Вот мы и получили предложение "Однажды Мерлин не мог понять, что он снова пытался встать". На большом корпусе результаты будут лучше, но легко предсатвить, как сделать из этого рабочую функцию. Можно переиначить задачу и работать с символами, тогда это будет ближе к T9 на современных телефонах.
 
 ```{block, type = "rmdtask"}
-Используя тексты обоих романов создайте генератор текстов, основанный на биграммах. Какое трехсловное предложение получится, если выбирать самое частотную пару, и начать со слова *I*?
-```
-
-```{r, echo = FALSE, results='asis'}
-check_question(answer = "I am sure", options = c("I was there", "I am sure", "I should go"))
+Попробуйте получить осмысленное предложение на основе своих фанфиков. Лучше использовать высокорейтинговые.
 ```
 
 ## Анализ тональности
@@ -237,7 +196,9 @@ check_question(answer = "I am sure", options = c("I was there", "I am sure", "I 
 ```{r, fig.height=10, fig.width=14}
 ru_sentiments <- read_csv("https://raw.githubusercontent.com/agricolamz/2020_HSE_DPO/master/data/ru_sentiment_linis-crowd.csv")
 
+set.seed(42)
 all_texts %>% 
+  filter(doc_id %in% sample(unique(all_texts$doc_id), 6)) %>% 
   group_by(doc_id) %>% 
   left_join(ru_sentiments, by = c("lemma" = "words")) %>% 
   mutate(value = ifelse(is.na(value), 0, value)) %>% 
@@ -247,6 +208,10 @@ all_texts %>%
   ggplot(aes(sentence_id, value, fill = color))+
   geom_col()+
   facet_wrap(~doc_id, scales = "free")
+```
+
+```{block, type = "rmdtask"}
+Попробуйте получить осмысленное предложение на основе своих фанфиков. Лучше использовать высокорейтинговые.
 ```
 
 ## Тематическое моделирование
