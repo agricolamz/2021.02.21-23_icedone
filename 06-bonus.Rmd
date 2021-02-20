@@ -1,0 +1,10 @@
+---
+editor_options: 
+  chunk_output_type: console
+---
+
+# Еще разные задачи и пакеты для этого (бонус)
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/3YgcmLUOP2s" frameborder="0" allowfullscreen></iframe>
+
+By Юля Мартысенко
