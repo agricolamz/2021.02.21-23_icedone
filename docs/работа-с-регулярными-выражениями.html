@@ -215,9 +215,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div id="данные" class="section level2" number="3.1">
 <h2><span class="header-section-number">3.1</span> Данные</h2>
 <p>Задача: импортируйте датасет <code>data_ficbook_mass_effect.csv</code>. Создайте копию, в которой не будет колонки <code>text</code>, либо сразу импортируйте без нее.</p>
-<div class="sourceCode" id="cb129"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb129-1"><a href="работа-с-регулярными-выражениями.html#cb129-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(data.table)</span>
-<span id="cb129-2"><a href="работа-с-регулярными-выражениями.html#cb129-2" aria-hidden="true" tabindex="-1"></a>mass_effect <span class="ot">&lt;-</span> <span class="fu">fread</span>(<span class="st">&#39;data_ficbook_mass_effect.csv&#39;</span>)</span>
-<span id="cb129-3"><a href="работа-с-регулярными-выражениями.html#cb129-3" aria-hidden="true" tabindex="-1"></a>mass_effect_short <span class="ot">&lt;-</span> mass_effect[, .SD, .SDcols <span class="ot">=</span> <span class="sc">-</span><span class="st">&#39;text&#39;</span>]</span></code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="работа-с-регулярными-выражениями.html#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(data.table)</span>
+<span id="cb1-2"><a href="работа-с-регулярными-выражениями.html#cb1-2" aria-hidden="true" tabindex="-1"></a>mass_effect <span class="ot">&lt;-</span> <span class="fu">fread</span>(<span class="st">&#39;data_ficbook_mass_effect.csv&#39;</span>)</span>
+<span id="cb1-3"><a href="работа-с-регулярными-выражениями.html#cb1-3" aria-hidden="true" tabindex="-1"></a>mass_effect_short <span class="ot">&lt;-</span> mass_effect[, .SD, .SDcols <span class="ot">=</span> <span class="sc">-</span><span class="st">&#39;text&#39;</span>]</span></code></pre></div>
 </div>
 <div id="регулярные-выражения" class="section level2" number="3.2">
 <h2><span class="header-section-number">3.2</span> Регулярные выражения</h2>
@@ -232,104 +232,39 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>Во-вторых, некоторые группы символов могут просто иметь дополнительные фиксированные значения. Так, для кодирования перехода на новую строку, табуляции и некоторых других непечатаемых символов используются определенные обозначения: <code>\n</code>, <code>\r</code>, <code>\t</code>, <code>\v</code>, <code>\f</code>. Соответственно, если в строке встретится какое-то из этих сочетаний, то строка будет прочитана и обработана не как строка, содержащая символы обратного слеша и буквы, а как строка с спец.символом (в случае с табуляцией - <code>\t</code>). Особенность парсера R в том, что символ <code>\</code> необходимо дополнительно экранировать, тоже обратным слешом. Это значит, что если в паттерне необходимо использовать <code>\v</code>, то в паттерне регулярных выражений в R он указывается как <code>\\v</code>.</p>
 <p>Задача: у вас есть вектор <code>vec &lt;- c('abd', 'bbc', 'ecd', 'ebbba')</code>. С помощью функции <code>gsub()</code> замените все буквы <code>a</code> на символ <code>_</code>.</p>
 <p>Решение:</p>
-<div class="sourceCode" id="cb130"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb130-1"><a href="работа-с-регулярными-выражениями.html#cb130-1" aria-hidden="true" tabindex="-1"></a>vec <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&#39;abd&#39;</span>, <span class="st">&#39;bbc&#39;</span>, <span class="st">&#39;ecd&#39;</span>, <span class="st">&#39;eba&#39;</span>)</span>
-<span id="cb130-2"><a href="работа-с-регулярными-выражениями.html#cb130-2" aria-hidden="true" tabindex="-1"></a><span class="fu">gsub</span>(<span class="st">&#39;a&#39;</span>, <span class="st">&#39;_&#39;</span>, vec)</span></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="работа-с-регулярными-выражениями.html#cb2-1" aria-hidden="true" tabindex="-1"></a>vec <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&#39;abd&#39;</span>, <span class="st">&#39;bbc&#39;</span>, <span class="st">&#39;ecd&#39;</span>, <span class="st">&#39;eba&#39;</span>)</span>
+<span id="cb2-2"><a href="работа-с-регулярными-выражениями.html#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="fu">gsub</span>(<span class="st">&#39;a&#39;</span>, <span class="st">&#39;_&#39;</span>, vec)</span></code></pre></div>
 <pre><code>## [1] &quot;_bd&quot; &quot;bbc&quot; &quot;ecd&quot; &quot;eb_&quot;</code></pre>
 <p>Задача: у вас есть вектор <code>vec &lt;- c('abd', 'bbc', 'ecd', 'ebbba')</code>. С помощью функции <code>gsub()</code> замените сочетание <code>bb</code> на символ <code>_</code>.
 Решение:</p>
-<div class="sourceCode" id="cb132"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb132-1"><a href="работа-с-регулярными-выражениями.html#cb132-1" aria-hidden="true" tabindex="-1"></a>vec <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&#39;abd&#39;</span>, <span class="st">&#39;bbc&#39;</span>, <span class="st">&#39;ecd&#39;</span>, <span class="st">&#39;ebbba&#39;</span>)</span>
-<span id="cb132-2"><a href="работа-с-регулярными-выражениями.html#cb132-2" aria-hidden="true" tabindex="-1"></a><span class="fu">gsub</span>(<span class="st">&#39;bb&#39;</span>, <span class="st">&#39;_&#39;</span>, vec)</span></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="работа-с-регулярными-выражениями.html#cb4-1" aria-hidden="true" tabindex="-1"></a>vec <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&#39;abd&#39;</span>, <span class="st">&#39;bbc&#39;</span>, <span class="st">&#39;ecd&#39;</span>, <span class="st">&#39;ebbba&#39;</span>)</span>
+<span id="cb4-2"><a href="работа-с-регулярными-выражениями.html#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="fu">gsub</span>(<span class="st">&#39;bb&#39;</span>, <span class="st">&#39;_&#39;</span>, vec)</span></code></pre></div>
 <pre><code>## [1] &quot;abd&quot;  &quot;_c&quot;   &quot;ecd&quot;  &quot;e_ba&quot;</code></pre>
 <div class="rmdtask">
 <p>
 С помощью функций <code>grep()</code> / <code>grepl()</code> выберите и посчитайте, в каком количестве строк в колонке <code>link</code> встречается строка <code>source=premium</code>. При желании можете использовать близкие по смыслу функции пакета <code>stringr</code> (<code>str_detect()</code> / <code>str_which()</code>).
 </p>
 </div>
-<!-- Решение:
-
-```r
-# data.table
-mass_effect[grep('source=premium', link), .N]
-```
-
-```
-## [1] 11
-```
-
-```r
-# base R
-length(grep('source=premium', mass_effect$link))
-```
-
-```
-## [1] 11
-```
--->
 <div class="rmdtask">
 <p>
 Посчитайте, в каком количестве строк не встречается упоминание Тангейзера.
 </p>
 </div>
-<!-- Решение:
-
-```r
-mass_effect[!grepl('Тангейзер', text), .N]
-```
-
-```
-## [1] 30600
-```
-
-```r
-sum(!grepl('Тангейзер', mass_effect$text))
-```
-
-```
-## [1] 30600
-```
--->
 <div class="rmdtask">
 <p>
 Из ссылки на пользователя вида <code>/authors/4039177</code> извлеките идентификатор пользователя. Запишите его в колонку <code>author_id</code>.
 </p>
 </div>
-<!-- Решение:
-
-```r
-mass_effect[, author_id := as.numeric(gsub('/authors/', '', author_link))]
-mass_effect[1:10, list(author, author_id, author_link)]
-```
-
-<div data-pagedtable="false">
-  <script data-pagedtable-source type="application/json">
-{"columns":[{"label":["author"],"name":[1],"type":["chr"],"align":["left"]},{"label":["author_id"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["author_link"],"name":[3],"type":["chr"],"align":["left"]}],"data":[{"1":"Sabi no Kami","2":"7370","3":"/authors/7370"},{"1":"Sabi no Kami","2":"7370","3":"/authors/7370"},{"1":"Sabi no Kami","2":"7370","3":"/authors/7370"},{"1":"Sabi no Kami","2":"7370","3":"/authors/7370"},{"1":"Dillonra","2":"3811888","3":"/authors/3811888"},{"1":"Dillonra","2":"3811888","3":"/authors/3811888"},{"1":"Nemerethe","2":"506335","3":"/authors/506335"},{"1":"Nemerethe","2":"506335","3":"/authors/506335"},{"1":"Nemerethe","2":"506335","3":"/authors/506335"},{"1":"Nemerethe","2":"506335","3":"/authors/506335"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
-  </script>
-</div>
--->
 <div class="rmdtask">
 <p>
 Выберите текст пролога фанфика ‘Песнь Виктории’ и запишите в новый объект <code>victory_song</code>. Удалите символы переноса строки (чтобы их увидеть, выведите объект на печать).
 </p>
 </div>
-<!-- Решение:
-
-```r
-victory_song <- mass_effect[title == 'Песнь Виктории' & subtitle == 'Пролог', text]
-victory_song <- gsub('\\r\\n', '', victory_song)
-```
--->
 <div class="rmdtask">
 <p>
 Задание повышенной сложности (как минимум, необходимо разобрать кейс): почистите текст так, чтобы <code>2063 года: «Покинуть</code> из первых строчек превратилось в <code>2063 года:______«Покинуть</code>.
 </p>
 </div>
-<!-- Решение:
-Решение: в тексте используется неразрывный пробел, при выводе его на печать RStudio его печатает как обычный пробел (хотя в тексте он остается именно неразрывным). Чтобы это увидеть, надо сохранить объект в текстовый файл и открыть его в RStudio, в редакторе - тогда эти символы будут подсвечены красными точками. Можно именно эти точки указать в паттерне, а можно прогнать через `URLencoder()` и посмотреть, что это за символ такой, и потом гуглить,к ак этот символ вычистить в регулярках в R. Так,  неразрывные пробелы можно указать как  `\u00A0` (именно так, тут слэш не экранируется).
-
-```r
-victory_song <- gsub('\u00A0', '_', victory_song)
-```
--->
 </div>
 <div id="классы-символов" class="section level2" number="3.4">
 <h2><span class="header-section-number">3.4</span> Классы символов</h2>
@@ -338,47 +273,15 @@ victory_song <- gsub('\u00A0', '_', victory_song)
 <p>Внутри классов поведение метасимволов может различаться в зависимости от места их указания в наборе символов класса. Например, <code>^</code> первым символов в наборе символов задает логическое отрицание <code>не из этих символов</code>, и чтобы избежать такого поведения, знак <code>^</code> надо поставить на любое место кроме первого в цепочке. Знак <code>]</code>, если есть необходимость его вкючения в набор символов, наоборот, надо ставить первым в наборе, в противном случае он будет проинтерпретирован как завершение класса. Знак <code>-</code>, если указан не первым и не последним, интерпретируется как знак интервала в известном диапазоне символов (например, <code>[0-9]</code> означает от <code>0</code> до <code>9</code>, а <code>[09-]</code> - символы <code>0</code>, <code>9</code> и <code>-</code>)</p>
 <div class="rmdtask">
 <p>
-Из строки <code>my_string &lt;- ‘D9586bNd879мрЯпп’</code> удалите все цифры.
+Из строки <code>my_string</code> удалите все цифры.
 </p>
 </div>
-<!-- Решение:
-
-```r
-my_string <- 'D9586bNd879мрЯпп'
-
-# перечисление набора цифр
-gsub('[0123456789]', '', my_string)
-```
-
-```
-## [1] "DbNdмрЯпп"
-```
-
-```r
-# указание набора символов
-gsub('[0-9]', '', my_string)
-```
-
-```
-## [1] "DbNdмрЯпп"
-```
--->
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="работа-с-регулярными-выражениями.html#cb6-1" aria-hidden="true" tabindex="-1"></a>my_string <span class="ot">&lt;-</span> <span class="st">&#39;D9586bNd879мрЯпп&#39;</span></span></code></pre></div>
 <div class="rmdtask">
 <p>
 Из строки <code>my_string &lt;- ‘D9586bNd879мрЯпп’</code> удалите все цифры и кириллические буквы.
 </p>
 </div>
-<!-- Решение:
-
-```r
-# указание набора символов
-gsub('[0-9А-Яа-я]', '', my_string)
-```
-
-```
-## [1] "DbNd"
-```
--->
 </div>
 <div id="символьные-классы-в-posix" class="section level2" number="3.5">
 <h2><span class="header-section-number">3.5</span> Символьные классы в POSIX</h2>
@@ -396,7 +299,7 @@ gsub('[0-9А-Яа-я]', '', my_string)
 <li><p><code>[:space:]</code>: некоторые управляющие символы, которые используются для создания разрывов между символами - пробел, переход на новую строку, возврат каретки, перевод страницы и т.д. В зависимости от локали может содержать дополнительные знаки.</p></li>
 </ul>
 <p>При указании символьного класса с помощью его имени надо помнить, что обозначение класса также заключается в <code>[]</code>. То есть, вместо <code>[:digit:]</code> (обозначение класса) надо использовать <code>[[:digit:]]</code> (указание символьного класса в рег.выражении):</p>
-<div class="sourceCode" id="cb134"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb134-1"><a href="работа-с-регулярными-выражениями.html#cb134-1" aria-hidden="true" tabindex="-1"></a><span class="fu">gsub</span>(<span class="st">&#39;[[:digit:]]&#39;</span>, <span class="st">&#39;&#39;</span>, my_string)</span></code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="работа-с-регулярными-выражениями.html#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">gsub</span>(<span class="st">&#39;[[:digit:]]&#39;</span>, <span class="st">&#39;&#39;</span>, my_string)</span></code></pre></div>
 <pre><code>## [1] &quot;DbNdмрЯпп&quot;</code></pre>
 </div>
 <div id="дополнительные-символьные-классы" class="section level2" number="3.6">
@@ -415,30 +318,11 @@ gsub('[0-9А-Яа-я]', '', my_string)
 Из <code>victory_song</code> удалите все знаки препинания (замените на пробел). Попробуйте это сделать как просто с помощью классов символов, так и с помощью POSIX-классов.
 </p>
 </div>
-<!-- Решение:
-
-```r
-victory_song <- gsub('[[:punct:]]', ' ', victory_song)
-```
--->
 <div class="rmdtask">
 <p>
 Задание повышенной сложности: выберите из <code>victory_song</code> все слова, в которых встречаются заглавные буквы.
 </p>
 </div>
-<!-- Решение:
-
-```r
-victory_song_words <- unlist(strsplit(victory_song, '\\s'))
-victory_song_words <- grep('[A-ZА-Я]', victory_song_words, value = TRUE)
-victory_song_words[1:5]
-```
-
-```
-## [1] "Постановление" "Верховного"    "Флагмана"      "Ямато"        
-## [5] "Покинуть"
-```
--->
 </div>
 <div id="метасимволы" class="section level2" number="3.7">
 <h2><span class="header-section-number">3.7</span> Метасимволы</h2>
@@ -461,26 +345,6 @@ victory_song_words[1:5]
 Удалите из строки <code>metachara.<em>cters</code> символы <code>.</code> и <code></em></code>.
 </p>
 </div>
-<!-- Решение:
-
-```r
-# экранируем символы
-gsub('\\.\\*', '', 'metachara.*cters')
-```
-
-```
-## [1] "metacharacters"
-```
-
-```r
-# если использовать аргумент fixed = TRUE, чтобы паттерн не интерпретировался как регулярка
-gsub('.*', '', 'metachara.*cters', fixed = TRUE)
-```
-
-```
-## [1] "metacharacters"
-```
--->
 </div>
 <div id="квантификаторы" class="section level2" number="3.8">
 <h2><span class="header-section-number">3.8</span> Квантификаторы</h2>
@@ -494,33 +358,27 @@ gsub('.*', '', 'metachara.*cters', fixed = TRUE)
 <li><p><code>{n,m}</code>: предыдущий символ или группа символов может встречаться в паттерно <code>n</code> раз, но не более, чем <code>m</code> раз. Конструкции <code>{0,1}</code> и <code>?</code> тождественны.</p></li>
 </ul>
 <p>Простейший пример использования квантификаторов - когда надо обработать какой-то символ, который встречается несколько раз. Например, скрыть последние четыре цифры в номере телефона:</p>
-<div class="sourceCode" id="cb136"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb136-1"><a href="работа-с-регулярными-выражениями.html#cb136-1" aria-hidden="true" tabindex="-1"></a>phone_number <span class="ot">&lt;-</span> <span class="st">&#39;my phone number: +7-929-138-5896&#39;</span></span>
-<span id="cb136-2"><a href="работа-с-регулярными-выражениями.html#cb136-2" aria-hidden="true" tabindex="-1"></a><span class="fu">gsub</span>(<span class="st">&#39;[0-9]{4}&#39;</span>, <span class="st">&#39;XXXX&#39;</span>, phone_number)</span></code></pre></div>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="работа-с-регулярными-выражениями.html#cb9-1" aria-hidden="true" tabindex="-1"></a>phone_number <span class="ot">&lt;-</span> <span class="st">&#39;my phone number: +7-929-138-5896&#39;</span></span>
+<span id="cb9-2"><a href="работа-с-регулярными-выражениями.html#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="fu">gsub</span>(<span class="st">&#39;[0-9]{4}&#39;</span>, <span class="st">&#39;XXXX&#39;</span>, phone_number)</span></code></pre></div>
 <pre><code>## [1] &quot;my phone number: +7-929-138-XXXX&quot;</code></pre>
 <div class="rmdtask">
 <p>
 В объекте <code>victory_song</code> замените повторяющиеся пробелы на один пробел.
 </p>
 </div>
-<!-- Решение:
-
-```r
-victory_song <- gsub('\\s+', ' ', victory_song)
-```
--->
 </div>
 <div id="логические-операции" class="section level2" number="3.9">
 <h2><span class="header-section-number">3.9</span> Логические операции</h2>
 <p>В регулярных выражениях логические операции представлены в достаточно ограниченном виде, можно даже сказать, крайне бедно. Наиболее очевидная из существующих операции - это <code>ИЛИ</code>, когда надо задать несколько вариантов комбинаций символов. В частности, это крайне полезный инструмент для фильтрации вектора строковых значений по определенному критерию. Например, регулярными выражениями с логическим оператором можно просто выделить из списка логов те файлы, которые были созданы в 2015-2016 годах:</p>
-<div class="sourceCode" id="cb138"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb138-1"><a href="работа-с-регулярными-выражениями.html#cb138-1" aria-hidden="true" tabindex="-1"></a>models <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&#39;log_2014.csv&#39;</span>, <span class="st">&#39;log_2015.csv&#39;</span>, <span class="st">&#39;log_2016.csv&#39;</span>, <span class="st">&#39;log_2017.csv&#39;</span>, <span class="st">&#39;log_2018.csv&#39;</span>)</span>
-<span id="cb138-2"><a href="работа-с-регулярными-выражениями.html#cb138-2" aria-hidden="true" tabindex="-1"></a>models[<span class="fu">grep</span>(<span class="st">&#39;2015|2016&#39;</span>, models)]</span></code></pre></div>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="работа-с-регулярными-выражениями.html#cb11-1" aria-hidden="true" tabindex="-1"></a>models <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&#39;log_2014.csv&#39;</span>, <span class="st">&#39;log_2015.csv&#39;</span>, <span class="st">&#39;log_2016.csv&#39;</span>, <span class="st">&#39;log_2017.csv&#39;</span>, <span class="st">&#39;log_2018.csv&#39;</span>)</span>
+<span id="cb11-2"><a href="работа-с-регулярными-выражениями.html#cb11-2" aria-hidden="true" tabindex="-1"></a>models[<span class="fu">grep</span>(<span class="st">&#39;2015|2016&#39;</span>, models)]</span></code></pre></div>
 <pre><code>## [1] &quot;log_2015.csv&quot; &quot;log_2016.csv&quot;</code></pre>
 <p>Второй логический оператор - <code>^</code>, используется в тех случаях, когда надо исключить символы определенного класса. Следует помнить, что <code>^</code> используется в этом значении сугубо внутри <code>[]</code>, в противном случае будет интерпретироваться в другом значении.</p>
-<div class="sourceCode" id="cb140"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb140-1"><a href="работа-с-регулярными-выражениями.html#cb140-1" aria-hidden="true" tabindex="-1"></a><span class="co"># заменяем на &#39;_&#39; любой из символов d, e, f</span></span>
-<span id="cb140-2"><a href="работа-с-регулярными-выражениями.html#cb140-2" aria-hidden="true" tabindex="-1"></a><span class="fu">gsub</span>(<span class="st">&#39;[def]&#39;</span>, <span class="st">&#39;_&#39;</span>, <span class="st">&#39;fadbcdefghe&#39;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="работа-с-регулярными-выражениями.html#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co"># заменяем на &#39;_&#39; любой из символов d, e, f</span></span>
+<span id="cb13-2"><a href="работа-с-регулярными-выражениями.html#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="fu">gsub</span>(<span class="st">&#39;[def]&#39;</span>, <span class="st">&#39;_&#39;</span>, <span class="st">&#39;fadbcdefghe&#39;</span>)</span></code></pre></div>
 <pre><code>## [1] &quot;_a_bc___gh_&quot;</code></pre>
-<div class="sourceCode" id="cb142"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb142-1"><a href="работа-с-регулярными-выражениями.html#cb142-1" aria-hidden="true" tabindex="-1"></a><span class="co"># заменяем на &#39;_&#39; все, кроме символов d, e, f</span></span>
-<span id="cb142-2"><a href="работа-с-регулярными-выражениями.html#cb142-2" aria-hidden="true" tabindex="-1"></a><span class="fu">gsub</span>(<span class="st">&#39;[^def]&#39;</span>, <span class="st">&#39;_&#39;</span>, <span class="st">&#39;fadbcdefghe&#39;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="работа-с-регулярными-выражениями.html#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co"># заменяем на &#39;_&#39; все, кроме символов d, e, f</span></span>
+<span id="cb15-2"><a href="работа-с-регулярными-выражениями.html#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="fu">gsub</span>(<span class="st">&#39;[^def]&#39;</span>, <span class="st">&#39;_&#39;</span>, <span class="st">&#39;fadbcdefghe&#39;</span>)</span></code></pre></div>
 <pre><code>## [1] &quot;f_d__def__e&quot;</code></pre>
 </div>
 <div id="якори" class="section level2" number="3.10">
@@ -537,89 +395,40 @@ victory_song <- gsub('\\s+', ' ', victory_song)
 Задание: удалите пробелы в начале и в конце <code>victory_song</code>. Используйте логические операторы
 </p>
 </div>
-<!-- Решение:
-
-```r
-victory_song <- gsub('^\\s|\\s$', '', victory_song)
-```
--->
 <div class="rmdtask">
 <p>
 Выберите все фанфики, у которых имя автора начинается с заглавной латинской буквы. Используйте для этого таблицу без текста фанфиков (тексты очень большие, утяжеляют работу с данными).
 </p>
 </div>
-<!-- Решение:
-
-```r
-mass_effect_short[grep('^[A-Z]', author)][1:10]
-```
-
-<div data-pagedtable="false">
-  <script data-pagedtable-source type="application/json">
-{"columns":[{"label":["link"],"name":[1],"type":["chr"],"align":["left"]},{"label":["title"],"name":[2],"type":["chr"],"align":["left"]},{"label":["author_link"],"name":[3],"type":["chr"],"align":["left"]},{"label":["author"],"name":[4],"type":["chr"],"align":["left"]},{"label":["page"],"name":[5],"type":["chr"],"align":["left"]},{"label":["fandom"],"name":[6],"type":["chr"],"align":["left"]},{"label":["subtitle"],"name":[7],"type":["chr"],"align":["left"]},{"label":["likes"],"name":[8],"type":["chr"],"align":["left"]}],"data":[{"1":"/readfic/5434780?source=premium&premiumVisit=1","2":"Aidu (фанфик переписан)","3":"/authors/7370","4":"Sabi no Kami","5":"1","6":"Mass Effect","7":"Предисловие","8":"161"},{"1":"/readfic/5434780?source=premium&premiumVisit=1","2":"Aidu (фанфик переписан)","3":"/authors/7370","4":"Sabi no Kami","5":"1","6":"Mass Effect","7":"I.I. Vox populi","8":"161"},{"1":"/readfic/5434780?source=premium&premiumVisit=1","2":"Aidu (фанфик переписан)","3":"/authors/7370","4":"Sabi no Kami","5":"1","6":"Mass Effect","7":"I.II. Vox populi","8":"161"},{"1":"/readfic/5434780?source=premium&premiumVisit=1","2":"Aidu (фанфик переписан)","3":"/authors/7370","4":"Sabi no Kami","5":"1","6":"Mass Effect","7":"От автора","8":"161"},{"1":"/readfic/8607023?source=premium&premiumVisit=1","2":"За горизонтом откровений","3":"/authors/3811888","4":"Dillonra","5":"1","6":"Mass Effect","7":"Прерванный отпуск","8":"89"},{"1":"/readfic/8607023?source=premium&premiumVisit=1","2":"За горизонтом откровений","3":"/authors/3811888","4":"Dillonra","5":"1","6":"Mass Effect","7":"Мёртвые созвездия","8":"89"},{"1":"/readfic/9840841?source=premium&premiumVisit=1","2":"Турианская роза","3":"/authors/506335","4":"Nemerethe","5":"1","6":"Mass Effect","7":"-1- Зиртус: Первый контакт","8":"88"},{"1":"/readfic/9840841?source=premium&premiumVisit=1","2":"Турианская роза","3":"/authors/506335","4":"Nemerethe","5":"1","6":"Mass Effect","7":"-2- Зиртус: Интерес","8":"88"},{"1":"/readfic/9840841?source=premium&premiumVisit=1","2":"Турианская роза","3":"/authors/506335","4":"Nemerethe","5":"1","6":"Mass Effect","7":"-3- Зиртус: Внимание","8":"88"},{"1":"/readfic/9840841?source=premium&premiumVisit=1","2":"Турианская роза","3":"/authors/506335","4":"Nemerethe","5":"1","6":"Mass Effect","7":"-4- Зиртус: Мысли","8":"88"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
-  </script>
-</div>
--->
 <div class="rmdtask">
 <p>
 Выберите с помощью регулярных выражений все фанфики, в который название состоит из одного слова. Используйте регулярные выражения, хотя, конечно, есть и более простые решения.
 </p>
 </div>
-<!-- Решение:
-
-```r
-mass_effect_short[grep('^[A-Za-zА-Яа-я0-9]+$', title)][1:10]
-```
-
-<div data-pagedtable="false">
-  <script data-pagedtable-source type="application/json">
-{"columns":[{"label":["link"],"name":[1],"type":["chr"],"align":["left"]},{"label":["title"],"name":[2],"type":["chr"],"align":["left"]},{"label":["author_link"],"name":[3],"type":["chr"],"align":["left"]},{"label":["author"],"name":[4],"type":["chr"],"align":["left"]},{"label":["page"],"name":[5],"type":["chr"],"align":["left"]},{"label":["fandom"],"name":[6],"type":["chr"],"align":["left"]},{"label":["subtitle"],"name":[7],"type":["chr"],"align":["left"]},{"label":["likes"],"name":[8],"type":["chr"],"align":["left"]}],"data":[{"1":"/readfic/10203124","2":"Техномаг","3":"/authors/3728103","4":"Айрэнс","5":"1","6":"Mass Effect","7":"Информация о гг (спойлер)","8":"203"},{"1":"/readfic/10203124","2":"Техномаг","3":"/authors/3728103","4":"Айрэнс","5":"1","6":"Mass Effect","7":"Пролог","8":"203"},{"1":"/readfic/10203124","2":"Техномаг","3":"/authors/3728103","4":"Айрэнс","5":"1","6":"Mass Effect","7":"Глава 1 (Spore)","8":"203"},{"1":"/readfic/10203124","2":"Техномаг","3":"/authors/3728103","4":"Айрэнс","5":"1","6":"Mass Effect","7":"Глава 2","8":"203"},{"1":"/readfic/10203124","2":"Техномаг","3":"/authors/3728103","4":"Айрэнс","5":"1","6":"Mass Effect","7":"Глава 3 (Эволюция)","8":"203"},{"1":"/readfic/10203124","2":"Техномаг","3":"/authors/3728103","4":"Айрэнс","5":"1","6":"Mass Effect","7":"Глава 4","8":"203"},{"1":"/readfic/10203124","2":"Техномаг","3":"/authors/3728103","4":"Айрэнс","5":"1","6":"Mass Effect","7":"Глава 5","8":"203"},{"1":"/readfic/10203124","2":"Техномаг","3":"/authors/3728103","4":"Айрэнс","5":"1","6":"Mass Effect","7":"Глава 6","8":"203"},{"1":"/readfic/10203124","2":"Техномаг","3":"/authors/3728103","4":"Айрэнс","5":"1","6":"Mass Effect","7":"Глава 7","8":"203"},{"1":"/readfic/10203124","2":"Техномаг","3":"/authors/3728103","4":"Айрэнс","5":"1","6":"Mass Effect","7":"Глава 8","8":"203"}],"options":{"columns":{"min":{},"max":[10]},"rows":{"min":[10],"max":[10]},"pages":{}}}
-  </script>
-</div>
--->
 </div>
 <div id="группы" class="section level2" number="3.11">
 <h2><span class="header-section-number">3.11</span> Группы</h2>
 <p>Квантификаторы обычно работают относительно предыдущего указанного символа. Однако нередко возникают ситуации, когда требуется провести какую-то операцию над определенной группой символов. В таких случаях используют знаки группировки - <code>(</code> и <code>)</code>. Набор символов и/или выражение, заключенные в скобки, будут восприниматься как неразрывная последовательность символов, и обрабатываться соответствующим образом.
 Например, если мы хотим удалить из строки строго двукратное повторение группы символов:</p>
-<div class="sourceCode" id="cb144"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb144-1"><a href="работа-с-регулярными-выражениями.html#cb144-1" aria-hidden="true" tabindex="-1"></a>my_string <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&#39;abRababL&#39;</span>)</span>
-<span id="cb144-2"><a href="работа-с-регулярными-выражениями.html#cb144-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb144-3"><a href="работа-с-регулярными-выражениями.html#cb144-3" aria-hidden="true" tabindex="-1"></a><span class="co"># пробуем удалить пару символов без указания группы</span></span>
-<span id="cb144-4"><a href="работа-с-регулярными-выражениями.html#cb144-4" aria-hidden="true" tabindex="-1"></a><span class="fu">gsub</span>(<span class="st">&#39;ab&#39;</span>, <span class="st">&#39;_DELETED_&#39;</span>, my_string)</span></code></pre></div>
+<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb17-1"><a href="работа-с-регулярными-выражениями.html#cb17-1" aria-hidden="true" tabindex="-1"></a>my_string <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&#39;abRababL&#39;</span>)</span>
+<span id="cb17-2"><a href="работа-с-регулярными-выражениями.html#cb17-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-3"><a href="работа-с-регулярными-выражениями.html#cb17-3" aria-hidden="true" tabindex="-1"></a><span class="co"># пробуем удалить пару символов без указания группы</span></span>
+<span id="cb17-4"><a href="работа-с-регулярными-выражениями.html#cb17-4" aria-hidden="true" tabindex="-1"></a><span class="fu">gsub</span>(<span class="st">&#39;ab&#39;</span>, <span class="st">&#39;_DELETED_&#39;</span>, my_string)</span></code></pre></div>
 <pre><code>## [1] &quot;_DELETED_R_DELETED__DELETED_L&quot;</code></pre>
-<div class="sourceCode" id="cb146"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb146-1"><a href="работа-с-регулярными-выражениями.html#cb146-1" aria-hidden="true" tabindex="-1"></a><span class="co"># группируем символы с помощью ()</span></span>
-<span id="cb146-2"><a href="работа-с-регулярными-выражениями.html#cb146-2" aria-hidden="true" tabindex="-1"></a><span class="fu">gsub</span>(<span class="st">&#39;(ab){2}&#39;</span>, <span class="st">&#39;_DELETED_&#39;</span>, my_string)</span></code></pre></div>
+<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb19-1"><a href="работа-с-регулярными-выражениями.html#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="co"># группируем символы с помощью ()</span></span>
+<span id="cb19-2"><a href="работа-с-регулярными-выражениями.html#cb19-2" aria-hidden="true" tabindex="-1"></a><span class="fu">gsub</span>(<span class="st">&#39;(ab){2}&#39;</span>, <span class="st">&#39;_DELETED_&#39;</span>, my_string)</span></code></pre></div>
 <pre><code>## [1] &quot;abR_DELETED_L&quot;</code></pre>
 <p>При необходимости всю обрабатываемую строку можно, с помощью символьных классов, групп и прочих инструментов регулярных выражений, представить в паттерне. При подобном представлении группы нумеруются и может быть обработана конкретная группа символов, вызванная по номеру. Номера групп обозначаются как <code>\\1</code>-<code>\\9</code>.</p>
 <p>Например:</p>
-<div class="sourceCode" id="cb148"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb148-1"><a href="работа-с-регулярными-выражениями.html#cb148-1" aria-hidden="true" tabindex="-1"></a><span class="fu">gsub</span>(<span class="st">&#39;([a-z]*)-([0-9]*)&#39;</span>, <span class="st">&#39;</span><span class="sc">\\</span><span class="st">1&#39;</span>, <span class="st">&#39;abra-9998&#39;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb21-1"><a href="работа-с-регулярными-выражениями.html#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="fu">gsub</span>(<span class="st">&#39;([a-z]*)-([0-9]*)&#39;</span>, <span class="st">&#39;</span><span class="sc">\\</span><span class="st">1&#39;</span>, <span class="st">&#39;abra-9998&#39;</span>)</span></code></pre></div>
 <pre><code>## [1] &quot;abra&quot;</code></pre>
-<div class="sourceCode" id="cb150"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb150-1"><a href="работа-с-регулярными-выражениями.html#cb150-1" aria-hidden="true" tabindex="-1"></a><span class="fu">gsub</span>(<span class="st">&#39;([a-z]*)-([0-9]*)&#39;</span>, <span class="st">&#39;</span><span class="sc">\\</span><span class="st">2&#39;</span>, <span class="st">&#39;abra-9998&#39;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb23-1"><a href="работа-с-регулярными-выражениями.html#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="fu">gsub</span>(<span class="st">&#39;([a-z]*)-([0-9]*)&#39;</span>, <span class="st">&#39;</span><span class="sc">\\</span><span class="st">2&#39;</span>, <span class="st">&#39;abra-9998&#39;</span>)</span></code></pre></div>
 <pre><code>## [1] &quot;9998&quot;</code></pre>
 <div class="rmdtask">
 <p>
 Удалите из названия фанфика текст в скобках, если он идет после собственно названия, используя механизм групп. Например, из <code>Aidu (фанфик переписан)</code> надо сделать <code>Aidu</code>. Проверьте, как выражение работает на строке <code>Открытое письмо от Жорика (он же дредноут «Давящий») автору Архин</code>.
 </p>
 </div>
-<!-- Решение:
-
-```r
-pattern <- '^(.*)+\\s+(\\(.*\\))$'
-gsub(pattern, '\\1', "Aidu (фанфик переписан)")
-```
-
-```
-## [1] "Aidu"
-```
-
-```r
-gsub(pattern, '\\1', "Открытое письмо от Жорика (он же дредноут «Давящий»)  автору Архин")
-```
-
-```
-## [1] "Открытое письмо от Жорика (он же дредноут «Давящий»)  автору Архин"
-```
--->
 
 </div>
 </div>
@@ -671,20 +480,6 @@ gitbook.start({
 });
 </script>
 
-<!-- dynamically load mathjax for compatibility with self-contained -->
-<script>
-  (function () {
-    var script = document.createElement("script");
-    script.type = "text/javascript";
-    var src = "true";
-    if (src === "" || src === "true") src = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML";
-    if (location.protocol !== "file:")
-      if (/^https?:/.test(src))
-        src = src.replace(/^https?:/, '');
-    script.src = src;
-    document.getElementsByTagName("head")[0].appendChild(script);
-  })();
-</script>
 </body>
 
 </html>
