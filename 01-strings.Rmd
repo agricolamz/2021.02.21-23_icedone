@@ -129,22 +129,31 @@ month.name
 ```
 
 * чтение из файла
-
-Чтение таблицы 
-Чтение таблицы 
+    
 Функция `read_csv` взята из пакета  `readr`, который является частью `tidyverse`. Для чтения таблиц также есть функции `read_csv2()`, `read_tsv()` и `read_delim()`. В каких случаях они используются вы можете узнать в справке, добавив перед именем функции вопросительный знак: `?read_csv2()`
 
-```{r, message=FALSE}
+```{r, include=FALSE}
 sample <- read_csv("data/data_ficbook_untamed_sample.csv")
 head(sample)
 ```
 
-Чтение текста
+
+```{r, eval=FALSE}
+sample <- read_csv("https://github.com/agricolamz/2021.02.21-23_icedone/raw/master/data/data_ficbook_untamed_sample.csv")
+head(sample)
+```
+
 Прочитать файл полностью можно с помощью функций из пакета `readr`: `read_file()` и `read_lines()`.
 **NB!** `read_file()` будет работать очень долго, если размер текста большой.
 
-```{r, message=FALSE}
+```{r, include=FALSE}
 my_file <- read_file("data/Cox_Forshaw_WHy_E_equals_mc_squared_ocr.txt")
+my_file
+```
+
+
+```{r, eval=FALSE}
+my_file <- read_file("https://raw.githubusercontent.com/agricolamz/2021.02.21-23_icedone/master/data/Cox_Forshaw_WHy_E_equals_mc_squared_ocr.txt")
 my_file
 ```
 
