@@ -11,12 +11,7 @@ editor_options:
 
 В этом эпизоде сериала АйсДан мы выясним, как обычно выглядят текстовые данные (и откуда их, кстати, брать!), как мы хотим, чтобы текстовые данные выглядели, и как перевести одно в другое. Бонус: смешные графики!
 
-МЕСТО ДЛЯ ВИДЕО :))
-
-В видео:
-1) форматы текстовых данных (массив текста -> term-document matrix)
-2) Токены и токенизация
-3) Стемминг и лемматизация
+<iframe width="560" height="315" src="https://www.youtube.com/watch?v=Pi4_LNX4IyY" frameborder="0" allowfullscreen></iframe>
 
 Для начала давайте установим нужные библиотеки:
 
@@ -179,7 +174,8 @@ books %>%
 ```{r}
 books %>% 
   unnest_tokens(word, text) %>% 
-  count(word, sort = TRUE) %>% 
+  count(word, sort = TRUE) %>%
+  anti_join(stop_words) %>% 
   slice(1:20) %>% 
   ggplot(aes(n, word))+
   geom_col()
@@ -191,6 +187,7 @@ books %>%
 books %>% 
   unnest_tokens(word, text) %>% 
   count(word, sort = TRUE) %>% 
+  anti_join(stop_words) %>% 
   slice(1:20) %>% 
   mutate(word = fct_reorder(word, n)) %>% 
   ggplot(aes(n, word))+
@@ -202,7 +199,8 @@ books %>%
 ```{r}
 books %>% 
   unnest_tokens(word, text) %>% 
-  count(title, word, sort = TRUE) %>% 
+  count(title, word, sort = TRUE) %>%
+  anti_join(stop_words) %>% 
   group_by(title) %>% 
   slice(1:20) %>% 
   ungroup() %>%
@@ -216,7 +214,8 @@ books %>%
 ```{r}
 books %>% 
   unnest_tokens(word, text) %>% 
-  count(title, word, sort = TRUE) %>% 
+  count(title, word, sort = TRUE) %>%
+  anti_join(stop_words) %>% 
   group_by(title) %>% 
   slice(1:20) %>% 
   ungroup() %>%
@@ -230,7 +229,8 @@ books %>%
 ```{r}
 books %>% 
   unnest_tokens(word, text) %>% 
-  count(title, word, sort = TRUE) %>% 
+  count(title, word, sort = TRUE) %>%
+  anti_join(stop_words) %>% 
   group_by(title) %>% 
   slice(1:20) %>% 
   ungroup() %>%
@@ -428,21 +428,109 @@ udpipe("Жила-была на свете крыса в морском порт�
 ```{block, type = "rmdtask"}
 Найдите три самыx популярных (по количеству лайков) фанфика и постройте барплоты для самых часто встречающихся слов в этих фанфиках.
 ```
+```{r, eval = FALSE, echo = FALSE}
+path <- "data_ficbook_death_note.csv"
+dat <- read_csv(path)
+ru_stopwords <- stopwords('ru')
+
+three_most_liked <- dat %>% arrange(desc(likes)) %>% slice(1:3)
+
+three_most_liked %>%
+  unnest_tokens(bigram, text, token = 'ngrams', n = 2) %>%
+  separate(bigram, c('word1', 'word2'), sep = ' ') %>% 
+  filter(!(word1 %in% ru_stopwords)) %>% 
+  filter(!(word2 %in% ru_stopwords)) %>% 
+  unite(bigram, word1, word2, sep = ' ') %>% 
+  group_by(link, title) %>% 
+  count(bigram, sort = TRUE) %>% 
+  filter(n > 1) %>%
+  ggplot(aes(x = n, y = bigram)) +geom_col() + facet_wrap(.~title, scale = 'free_y') + theme_classic()
+```
+
 
 ```{block, type = "rmdtask"}
 Найдите самый длинный фанфик (не забывайте, что в нашем датасете одна строка это одна глава, а глав бывает несколько) и постройте для него граф биграмм (не всех, конечно, а тех, что встречаются чаще скольки-то раз).
 ```
 
+```{r, eval = FALSE, echo = FALSE}
+longest_fic <- dat %>%
+  group_by(link) %>%
+  mutate(text = paste0(text, collapse = ''), doc_id = title) %>%
+  slice(1) %>% ungroup() %>%
+  mutate(length = str_length(text)) %>%
+  arrange(desc(length)) %>% slice(1)
+
+longest_fic %>% 
+  unnest_tokens(word, text, token = 'words') %>%
+  filter(!(word %in% ru_stopwords)) %>%
+  count(word, sort = TRUE) %>%
+  filter(n > 100)
+
+
+longest_fic_graph_obj <- longest_fic %>% unnest_tokens(bigram, text, token = 'ngrams', n = 2) %>%
+  separate(bigram, c('word1', 'word2'), sep = ' ') %>% 
+  filter(!(word1 %in% ru_stopwords)) %>% 
+  filter(!(word2 %in% ru_stopwords)) %>% 
+  count(word1, word2, sort = TRUE) %>%
+  filter(n > 30) %>%
+  graph_from_data_frame()
+
+ggraph(longest_fic_graph_obj, layout = "fr") +
+  geom_edge_link() +
+  geom_node_point() +
+  geom_node_text(aes(label = name), vjust = 1, hjust = 1)
+```
+
 ```{block, type = "rmdtask"}
 Для того же самого длинного фанфика по самым частотным словам поймите, какие в нём есть персонажи и как их зовут. Постройте график, который показывает, как частота появления разных персонажей меняется на протяжении фанфика.
+```
+```{r, eval = FALSE, echo = FALSE}
+longest_fic %>% 
+  unnest_tokens(word, text) %>% 
+  mutate(narrative_time = 1:n()) %>% 
+  filter(str_detect(word, "рюдзаки$|лайт$|мелло$|кира$|ниа$")) %>%  
+  filter(word != 'лоулайт') %>% 
+  ggplot()+
+  geom_vline(aes(xintercept = narrative_time, color = word))+
+  facet_wrap(~word, ncol = 1)
 ```
 
 ```{block, type = "rmdtask"}
 Какие прилагательные чаще всего используются в вашем фандоме со словом "глаз" (в любой форме)? Проиллюстрируйте облаком слов. Именно здесь вам понадобится лемматизация, так что используйте сэмпл.
 ```
+```{r, eval = FALSE, echo = FALSE}
+rumodel <- udpipe_download_model(language = "russian-syntagrus") #этой строке нужно время
+
+
+subsample_links <- unique(dat$link) %>% sample(30) 
+subsample_dat <- dat %>% filter(link %in% subsample_links)
+subsample_lemmatized <- subsample_dat %>% group_by(link) %>% mutate(text = paste0(text, collapse = ''), doc_id = title) %>% slice(1) %>% ungroup() %>% udpipe(object = rumodel) #и этой строке нужно время
+
+
+subsample_lemmatized %>% filter(lead(lemma,1) == 'глаз' & upos == 'ADJ') %>% count(lemma, sort = TRUE) %>% slice(1:30) %>% ggplot(aes(label = lemma, size = n, color = n)) + geom_text_wordcloud(rm_outside = TRUE)  + scale_size_area(max_size = 30)
+```
 
 ```{block, type = "rmdtask"}
 Найдите самого плодовитого автора в вашем фандоме (то есть, такого, который написал больше всего фанфиков). Попробуйте найти клише, которые встречаются в его или её текстах. Тут можно посмотреть на биграммы, триграммы или и то, и другое - посмотрите, что интереснее, и покажите на графике (можно барплот, можно сделать облако слов, можете придумать свой вариант).
+```
+```{r, eval = FALSE, echo = FALSE}
+# Некоторые мысли о вещах, с которыми тут можно поиграть:
+# 1) взять триграммы и не так строго фильтровать стоп-слова (в смысле, использовать более короткий список из библиотеки stopwords, или фильтровать с ИЛИ (слово1 не стоп-слово ИЛИ слово2 не стоп-слово))
+# 2) лемматизировать и поубирать биграммы/триграммы с какими-нибудь частями речи
+# 3) добавлять в список доп. стоп-слова, специфические для автора
+
+most_author <- dat %>% group_by(author) %>% summarize(n = n_distinct(link)) %>% arrange(desc(n)) %>% slice(1) %>% select(author)
+
+dat %>%
+  filter(author == most_author$author) %>% 
+  unnest_tokens(bigram, text, token = 'ngrams', n = 2) %>%
+  separate(bigram, c('word1', 'word2'), sep = ' ') %>% 
+  filter(!(word1 %in% ru_stopwords)) %>%
+  filter(!(word2 %in% ru_stopwords)) %>% 
+  unite(bigram, word1, word2, sep = ' ') %>%
+  count(bigram, sort = TRUE) %>%
+  filter(n > 20) %>%
+  ggplot(aes(label = bigram, size = n, color = n)) + geom_text_wordcloud(rm_outside = TRUE)  + scale_size_area(max_size = 30)
 ```
 
 Если у вас появятся вопросы - смело задавайте их в канале #text-preprocessing-questions, а все странные и нелепые графики присылайте в #accidental-art. Удачи!
