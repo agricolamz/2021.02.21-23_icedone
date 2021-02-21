@@ -342,7 +342,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <ul>
 <li>Приведение к желаемому количеству</li>
 </ul>
-<p>Иногда нам нужно соклатить строку до определенного количества символов. Это легко сделать с помощью функции <code>str_trunc()</code>. Например, можно сократить количество знаков в строке до 6 (по умолчанию индикатор сокращения - <code>ellipsis</code> - это многоточие):</p>
+<p>Иногда нам нужно сократить строку до определенного количества символов. Это легко сделать с помощью функции <code>str_trunc()</code>. Например, можно сократить количество знаков в строке до 6 (по умолчанию индикатор сокращения - <code>ellipsis</code> - это многоточие):</p>
 <div class="sourceCode" id="cb44"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb44-1"><a href="работа-со-строками.html#cb44-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tibble</span>(<span class="at">mn =</span> month.name) <span class="sc">%&gt;%</span> </span>
 <span id="cb44-2"><a href="работа-со-строками.html#cb44-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">mn_new =</span> <span class="fu">str_trunc</span>(mn, <span class="at">width=</span><span class="dv">6</span>))</span></code></pre></div>
 <div data-pagedtable="false">
