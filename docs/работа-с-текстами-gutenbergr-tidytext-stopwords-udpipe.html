@@ -358,7 +358,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 Постройте следующий график, на котором представлены самые частотные 20 слов каждого из произведений.
 </p>
 </div>
-<p><img src="da4l_files/figure-html/unnamed-chunk-153-1.png" width="672" /></p>
+<p><img src="da4l_files/figure-html/unnamed-chunk-147-1.png" width="672" /></p>
 <p>Как видно, на графике всё не упорядочено, давайте начнем с такого примера:</p>
 <div class="sourceCode" id="cb218"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb218-1"><a href="работа-с-текстами-gutenbergr-tidytext-stopwords-udpipe.html#cb218-1" aria-hidden="true" tabindex="-1"></a>books <span class="sc">%&gt;%</span> </span>
 <span id="cb218-2"><a href="работа-с-текстами-gutenbergr-tidytext-stopwords-udpipe.html#cb218-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">unnest_tokens</span>(word, text) <span class="sc">%&gt;%</span> </span>
@@ -367,7 +367,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb218-5"><a href="работа-с-текстами-gutenbergr-tidytext-stopwords-udpipe.html#cb218-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">slice</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">20</span>) <span class="sc">%&gt;%</span> </span>
 <span id="cb218-6"><a href="работа-с-текстами-gutenbergr-tidytext-stopwords-udpipe.html#cb218-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(n, word))<span class="sc">+</span></span>
 <span id="cb218-7"><a href="работа-с-текстами-gutenbergr-tidytext-stopwords-udpipe.html#cb218-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_col</span>()</span></code></pre></div>
-<p><img src="da4l_files/figure-html/unnamed-chunk-154-1.png" width="672" /></p>
+<p><img src="da4l_files/figure-html/unnamed-chunk-148-1.png" width="672" /></p>
 <p>Если мы работаем с одним фасетом, то все проблемы может решить функция <code>fct_reorder()</code>, которая упорядочивает на основании некоторой переменной:</p>
 <div class="sourceCode" id="cb219"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb219-1"><a href="работа-с-текстами-gutenbergr-tidytext-stopwords-udpipe.html#cb219-1" aria-hidden="true" tabindex="-1"></a>books <span class="sc">%&gt;%</span> </span>
 <span id="cb219-2"><a href="работа-с-текстами-gutenbergr-tidytext-stopwords-udpipe.html#cb219-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">unnest_tokens</span>(word, text) <span class="sc">%&gt;%</span> </span>
@@ -377,7 +377,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb219-6"><a href="работа-с-текстами-gutenbergr-tidytext-stopwords-udpipe.html#cb219-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">word =</span> <span class="fu">fct_reorder</span>(word, n)) <span class="sc">%&gt;%</span> </span>
 <span id="cb219-7"><a href="работа-с-текстами-gutenbergr-tidytext-stopwords-udpipe.html#cb219-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(n, word))<span class="sc">+</span></span>
 <span id="cb219-8"><a href="работа-с-текстами-gutenbergr-tidytext-stopwords-udpipe.html#cb219-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_col</span>()</span></code></pre></div>
-<p><img src="da4l_files/figure-html/unnamed-chunk-155-1.png" width="672" /></p>
+<p><img src="da4l_files/figure-html/unnamed-chunk-149-1.png" width="672" /></p>
 <p>Однако, если мы применим это к нашим данным, то получится неупорядочено, потому что <code>fct_reorder()</code>упорядочивает, не учитывая, где какой текст:</p>
 <div class="sourceCode" id="cb220"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb220-1"><a href="работа-с-текстами-gutenbergr-tidytext-stopwords-udpipe.html#cb220-1" aria-hidden="true" tabindex="-1"></a>books <span class="sc">%&gt;%</span> </span>
 <span id="cb220-2"><a href="работа-с-текстами-gutenbergr-tidytext-stopwords-udpipe.html#cb220-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">unnest_tokens</span>(word, text) <span class="sc">%&gt;%</span> </span>
@@ -390,7 +390,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb220-9"><a href="работа-с-текстами-gutenbergr-tidytext-stopwords-udpipe.html#cb220-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(n, word))<span class="sc">+</span></span>
 <span id="cb220-10"><a href="работа-с-текстами-gutenbergr-tidytext-stopwords-udpipe.html#cb220-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_col</span>()<span class="sc">+</span></span>
 <span id="cb220-11"><a href="работа-с-текстами-gutenbergr-tidytext-stopwords-udpipe.html#cb220-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span>title, <span class="at">scales =</span> <span class="st">&quot;free&quot;</span>)</span></code></pre></div>
-<p><img src="da4l_files/figure-html/unnamed-chunk-156-1.png" width="672" /></p>
+<p><img src="da4l_files/figure-html/unnamed-chunk-150-1.png" width="672" /></p>
 <p>В пакете <code>tidytext</code> есть функция <code>reorder_within()</code>, которая позволяет упорядочить нужным образом:</p>
 <div class="sourceCode" id="cb221"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb221-1"><a href="работа-с-текстами-gutenbergr-tidytext-stopwords-udpipe.html#cb221-1" aria-hidden="true" tabindex="-1"></a>books <span class="sc">%&gt;%</span> </span>
 <span id="cb221-2"><a href="работа-с-текстами-gutenbergr-tidytext-stopwords-udpipe.html#cb221-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">unnest_tokens</span>(word, text) <span class="sc">%&gt;%</span> </span>
@@ -403,7 +403,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb221-9"><a href="работа-с-текстами-gutenbergr-tidytext-stopwords-udpipe.html#cb221-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(n, word))<span class="sc">+</span></span>
 <span id="cb221-10"><a href="работа-с-текстами-gutenbergr-tidytext-stopwords-udpipe.html#cb221-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_col</span>()<span class="sc">+</span></span>
 <span id="cb221-11"><a href="работа-с-текстами-gutenbergr-tidytext-stopwords-udpipe.html#cb221-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span>title, <span class="at">scales =</span> <span class="st">&quot;free&quot;</span>)</span></code></pre></div>
-<p><img src="da4l_files/figure-html/unnamed-chunk-157-1.png" width="672" /></p>
+<p><img src="da4l_files/figure-html/unnamed-chunk-151-1.png" width="672" /></p>
 <p>Чтобы избавиться от дополнительной подписи, нужно использовать <code>scale_y_reordered()</code> или <code>scale_x_reordered()</code>:</p>
 <div class="sourceCode" id="cb222"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb222-1"><a href="работа-с-текстами-gutenbergr-tidytext-stopwords-udpipe.html#cb222-1" aria-hidden="true" tabindex="-1"></a>books <span class="sc">%&gt;%</span> </span>
 <span id="cb222-2"><a href="работа-с-текстами-gutenbergr-tidytext-stopwords-udpipe.html#cb222-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">unnest_tokens</span>(word, text) <span class="sc">%&gt;%</span> </span>
@@ -417,7 +417,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb222-10"><a href="работа-с-текстами-gutenbergr-tidytext-stopwords-udpipe.html#cb222-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_col</span>()<span class="sc">+</span></span>
 <span id="cb222-11"><a href="работа-с-текстами-gutenbergr-tidytext-stopwords-udpipe.html#cb222-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span>title, <span class="at">scales =</span> <span class="st">&quot;free&quot;</span>)<span class="sc">+</span></span>
 <span id="cb222-12"><a href="работа-с-текстами-gutenbergr-tidytext-stopwords-udpipe.html#cb222-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_reordered</span>()</span></code></pre></div>
-<p><img src="da4l_files/figure-html/unnamed-chunk-158-1.png" width="672" /></p>
+<p><img src="da4l_files/figure-html/unnamed-chunk-152-1.png" width="672" /></p>
 <p>Ещё один способ графически представить самые частотные слова это сделать облако слов. Есть библиотека <code>wordclouds</code> с функцией <code>wordcloud</code>.</p>
 <p>Давайте построим облако слов для романа Lady Susan. Для раскрашивания слов в разные цвета я использую палитру из великой библиотеки <code>wesanderson</code> с цветами разных фильмов, собственно, Уэса Андерсона.</p>
 <div class="sourceCode" id="cb223"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb223-1"><a href="работа-с-текстами-gutenbergr-tidytext-stopwords-udpipe.html#cb223-1" aria-hidden="true" tabindex="-1"></a>pal <span class="ot">&lt;-</span> <span class="fu">wes_palette</span>(<span class="st">&quot;Royal2&quot;</span>)</span>
@@ -426,7 +426,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb223-4"><a href="работа-с-текстами-gutenbergr-tidytext-stopwords-udpipe.html#cb223-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">unnest_tokens</span>(<span class="at">input =</span> <span class="st">&#39;text&#39;</span>, <span class="at">output =</span> <span class="st">&#39;word&#39;</span>) <span class="sc">%&gt;%</span></span>
 <span id="cb223-5"><a href="работа-с-текстами-gutenbergr-tidytext-stopwords-udpipe.html#cb223-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">count</span>(title, word, <span class="at">sort =</span> <span class="cn">TRUE</span>) <span class="sc">%&gt;%</span> <span class="fu">anti_join</span>(stop_words) <span class="sc">%&gt;%</span></span>
 <span id="cb223-6"><a href="работа-с-текстами-gutenbergr-tidytext-stopwords-udpipe.html#cb223-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">with</span>(<span class="fu">wordcloud</span>(word, n, <span class="at">random.order =</span> <span class="cn">FALSE</span>, <span class="at">max.words =</span> <span class="dv">50</span>, <span class="at">colors=</span>pal))</span></code></pre></div>
-<p><img src="da4l_files/figure-html/unnamed-chunk-159-1.png" width="672" /></p>
+<p><img src="da4l_files/figure-html/unnamed-chunk-153-1.png" width="672" /></p>
 <p><code>wordcloud</code>, к сожалению, не совместим с <code>ggplot2</code> без которого, например, гораздо сложнее сделать фасетизацию и не задолбаться. Зато есть библиотека <code>ggwordcloud</code>, в которой есть <code>geom_text_wordcloud</code>. Воспользуемся же им!</p>
 <p>Предварительное предупреждение: если слов в облако надо вместить много, то `<code>ggwordcloud</code> указывает для редко встречающихся очень маленький размер шрифта. <code>ggplot</code> от этого волнуется и выдаёт ворнинги, по одному на каждое слово. Это я к чему: график в чанке снизу выдаёт миллион ворнингов. В этом мануале они спрятаны, а когда столкнётесь с ними при выполнении заданий, можете их игнорировать. И, конечно, совершенно не обязательно включать слова, которые встречаются всего пару раз в очень длинном тексте.</p>
 <div class="sourceCode" id="cb224"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb224-1"><a href="работа-с-текстами-gutenbergr-tidytext-stopwords-udpipe.html#cb224-1" aria-hidden="true" tabindex="-1"></a>books <span class="sc">%&gt;%</span> </span>
@@ -434,7 +434,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb224-3"><a href="работа-с-текстами-gutenbergr-tidytext-stopwords-udpipe.html#cb224-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">count</span>(title, word, <span class="at">sort =</span> <span class="cn">TRUE</span>) <span class="sc">%&gt;%</span> <span class="fu">anti_join</span>(stop_words) <span class="sc">%&gt;%</span></span>
 <span id="cb224-4"><a href="работа-с-текстами-gutenbergr-tidytext-stopwords-udpipe.html#cb224-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(n <span class="sc">&gt;</span> <span class="dv">20</span>) <span class="sc">%&gt;%</span> </span>
 <span id="cb224-5"><a href="работа-с-текстами-gutenbergr-tidytext-stopwords-udpipe.html#cb224-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">label =</span> word, <span class="at">size =</span> n, <span class="at">color =</span> n)) <span class="sc">+</span> <span class="fu">geom_text_wordcloud</span>(<span class="at">rm_outside =</span> <span class="cn">TRUE</span>) <span class="sc">+</span> <span class="fu">facet_wrap</span>(<span class="sc">~</span>title, <span class="at">scale =</span> <span class="st">&#39;free&#39;</span>) <span class="sc">+</span> <span class="fu">scale_size_area</span>(<span class="at">max_size =</span> <span class="dv">10</span>)</span></code></pre></div>
-<p><img src="da4l_files/figure-html/unnamed-chunk-160-1.png" width="672" /></p>
+<p><img src="da4l_files/figure-html/unnamed-chunk-154-1.png" width="672" /></p>
 <p>Поиск самых частотных слов — не единственная задача, которую можно решать при работе с текстом. Иногда имеет смысл узнать распределение слов в произведении. Давайте посмотрим как распределены в романе “Эмма” фамилии главных героев:</p>
 <div class="sourceCode" id="cb225"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb225-1"><a href="работа-с-текстами-gutenbergr-tidytext-stopwords-udpipe.html#cb225-1" aria-hidden="true" tabindex="-1"></a>books <span class="sc">%&gt;%</span> </span>
 <span id="cb225-2"><a href="работа-с-текстами-gutenbergr-tidytext-stopwords-udpipe.html#cb225-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(title <span class="sc">==</span> <span class="st">&quot;Emma&quot;</span>) <span class="sc">%&gt;%</span> </span>
@@ -444,7 +444,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb225-6"><a href="работа-с-текстами-gutenbergr-tidytext-stopwords-udpipe.html#cb225-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>()<span class="sc">+</span></span>
 <span id="cb225-7"><a href="работа-с-текстами-gutenbergr-tidytext-stopwords-udpipe.html#cb225-7" aria-hidden="true" tabindex="-1"></a>      <span class="fu">geom_vline</span>(<span class="fu">aes</span>(<span class="at">xintercept =</span> narrative_time))<span class="sc">+</span></span>
 <span id="cb225-8"><a href="работа-с-текстами-gutenbergr-tidytext-stopwords-udpipe.html#cb225-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span>word, <span class="at">ncol =</span> <span class="dv">1</span>)</span></code></pre></div>
-<p><img src="da4l_files/figure-html/unnamed-chunk-161-1.png" width="672" /></p>
+<p><img src="da4l_files/figure-html/unnamed-chunk-155-1.png" width="672" /></p>
 <p>Функция <code>unnest_tokens()</code> позволяет работать не только со словами, но и, напрмиер, с n-граммами, то есть сочетаниями из n слов. Важно понимать, что n-граммы образуются “внахлёст”:</p>
 <div class="sourceCode" id="cb226"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb226-1"><a href="работа-с-текстами-gutenbergr-tidytext-stopwords-udpipe.html#cb226-1" aria-hidden="true" tabindex="-1"></a>txt <span class="ot">&lt;-</span> <span class="fu">tibble</span>(<span class="at">text =</span> <span class="st">&quot;I&#39;m a Barbie girl in a Barbie world&quot;</span>)</span>
 <span id="cb226-2"><a href="работа-с-текстами-gutenbergr-tidytext-stopwords-udpipe.html#cb226-2" aria-hidden="true" tabindex="-1"></a></span>
@@ -507,9 +507,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb230-9"><a href="работа-с-текстами-gutenbergr-tidytext-stopwords-udpipe.html#cb230-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">graph_from_data_frame</span>()</span>
 <span id="cb230-10"><a href="работа-с-текстами-gutenbergr-tidytext-stopwords-udpipe.html#cb230-10" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb230-11"><a href="работа-с-текстами-gutenbergr-tidytext-stopwords-udpipe.html#cb230-11" aria-hidden="true" tabindex="-1"></a>bigrams_graph</span></code></pre></div>
-<pre><code>IGRAPH 05c67a4 DN-- 25 17 -- 
+<pre><code>IGRAPH cddcbd5 DN-- 25 17 -- 
 + attr: name (v/c), n (e/n)
-+ edges from 05c67a4 (vertex names):
++ edges from cddcbd5 (vertex names):
  [1] miss   -&gt;woodhouse frank  -&gt;churchill miss   -&gt;fairfax   miss   -&gt;bates    
  [5] jane   -&gt;fairfax   lady   -&gt;susan     de     -&gt;courcy    miss   -&gt;smith    
  [9] sir    -&gt;james     john   -&gt;knightley miss   -&gt;taylor    dear   -&gt;emma     
@@ -520,7 +520,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb232-2"><a href="работа-с-текстами-gutenbergr-tidytext-stopwords-udpipe.html#cb232-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_edge_link</span>() <span class="sc">+</span></span>
 <span id="cb232-3"><a href="работа-с-текстами-gutenbergr-tidytext-stopwords-udpipe.html#cb232-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_node_point</span>() <span class="sc">+</span></span>
 <span id="cb232-4"><a href="работа-с-текстами-gutenbergr-tidytext-stopwords-udpipe.html#cb232-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_node_text</span>(<span class="fu">aes</span>(<span class="at">label =</span> name), <span class="at">vjust =</span> <span class="dv">1</span>, <span class="at">hjust =</span> <span class="dv">1</span>)</span></code></pre></div>
-<p><img src="da4l_files/figure-html/unnamed-chunk-167-1.png" width="672" /></p>
+<p><img src="da4l_files/figure-html/unnamed-chunk-161-1.png" width="672" /></p>
 </div>
 <div id="пакет-stopwords" class="section level2" number="5.5">
 <h2><span class="header-section-number">5.5</span> Пакет <code>stopwords</code></h2>
