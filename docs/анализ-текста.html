@@ -276,7 +276,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb252-8"><a href="анализ-текста.html#cb252-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_col</span>()<span class="sc">+</span></span>
 <span id="cb252-9"><a href="анализ-текста.html#cb252-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span>fandom, <span class="at">scales =</span> <span class="st">&quot;free&quot;</span>)<span class="sc">+</span></span>
 <span id="cb252-10"><a href="анализ-текста.html#cb252-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_reordered</span>()</span></code></pre></div>
-<p><img src="da4l_files/figure-html/unnamed-chunk-189-1.png" width="672" /></p>
+<p><img src="da4l_files/figure-html/unnamed-chunk-190-1.png" width="672" /></p>
 <p>А теперь сравним получившееся с мерой tf-idf:</p>
 <div class="sourceCode" id="cb253"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb253-1"><a href="анализ-текста.html#cb253-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidytext)</span>
 <span id="cb253-2"><a href="анализ-текста.html#cb253-2" aria-hidden="true" tabindex="-1"></a>all_texts <span class="sc">%&gt;%</span> </span>
@@ -289,7 +289,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb253-9"><a href="анализ-текста.html#cb253-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_col</span>()<span class="sc">+</span></span>
 <span id="cb253-10"><a href="анализ-текста.html#cb253-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span>fandom, <span class="at">scales =</span> <span class="st">&quot;free&quot;</span>)<span class="sc">+</span></span>
 <span id="cb253-11"><a href="анализ-текста.html#cb253-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_reordered</span>()</span></code></pre></div>
-<p><img src="da4l_files/figure-html/unnamed-chunk-190-1.png" width="1344" /></p>
+<p><img src="da4l_files/figure-html/unnamed-chunk-191-1.png" width="1344" /></p>
 <div class="rmdtask">
 <p>
 Повторите со своей выборкой фанфиков. Лучше использовать высокорейтинговые.
@@ -424,7 +424,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb265-12"><a href="анализ-текста.html#cb265-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(sentence_id, value, <span class="at">fill =</span> color))<span class="sc">+</span></span>
 <span id="cb265-13"><a href="анализ-текста.html#cb265-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_col</span>()<span class="sc">+</span></span>
 <span id="cb265-14"><a href="анализ-текста.html#cb265-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span>doc_id, <span class="at">scales =</span> <span class="st">&quot;free&quot;</span>)</span></code></pre></div>
-<p><img src="da4l_files/figure-html/unnamed-chunk-195-1.png" width="1344" /></p>
+<p><img src="da4l_files/figure-html/unnamed-chunk-196-1.png" width="1344" /></p>
 <div class="rmdtask">
 <p>
 Попробуйте получить осмысленное предложение на основе своих фанфиков. Лучше использовать высокорейтинговые.
@@ -455,7 +455,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb267-9"><a href="анализ-текста.html#cb267-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span>topic, <span class="at">scales =</span> <span class="st">&quot;free&quot;</span>) <span class="sc">+</span></span>
 <span id="cb267-10"><a href="анализ-текста.html#cb267-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_flip</span>() <span class="sc">+</span></span>
 <span id="cb267-11"><a href="анализ-текста.html#cb267-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_reordered</span>()</span></code></pre></div>
-<p><img src="da4l_files/figure-html/unnamed-chunk-198-1.png" width="672" /></p>
+<p><img src="da4l_files/figure-html/unnamed-chunk-199-1.png" width="672" /></p>
 <p>Посмотрим, какие слова специфичны для каждой из тем (т. е. частота значительно больше в одной теме, чем в другой):</p>
 <div class="sourceCode" id="cb268"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb268-1"><a href="анализ-текста.html#cb268-1" aria-hidden="true" tabindex="-1"></a>lda <span class="sc">%&gt;%</span> </span>
 <span id="cb268-2"><a href="анализ-текста.html#cb268-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tidy</span>(<span class="at">matrix =</span> <span class="st">&quot;beta&quot;</span>) <span class="sc">%&gt;%</span> </span>
@@ -466,7 +466,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb268-7"><a href="анализ-текста.html#cb268-7" aria-hidden="true" tabindex="-1"></a>         <span class="at">term =</span> <span class="fu">fct_reorder</span>(term, log_ratio)) <span class="sc">%&gt;%</span> </span>
 <span id="cb268-8"><a href="анализ-текста.html#cb268-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(log_ratio, term))<span class="sc">+</span></span>
 <span id="cb268-9"><a href="анализ-текста.html#cb268-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_col</span>()</span></code></pre></div>
-<p><img src="da4l_files/figure-html/unnamed-chunk-199-1.png" width="672" /></p>
+<p><img src="da4l_files/figure-html/unnamed-chunk-200-1.png" width="672" /></p>
 <p>Посмотрим на распределение текстов по темам:</p>
 <div class="sourceCode" id="cb269"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb269-1"><a href="анализ-текста.html#cb269-1" aria-hidden="true" tabindex="-1"></a>lda <span class="sc">%&gt;%</span> </span>
 <span id="cb269-2"><a href="анализ-текста.html#cb269-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tidy</span>(<span class="at">matrix =</span> <span class="st">&quot;gamma&quot;</span>) </span></code></pre></div>

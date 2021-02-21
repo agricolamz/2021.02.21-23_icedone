@@ -327,3 +327,7 @@ str_c("https://ficbook.net/fanfiction/movies_and_tv_series/ochenj_strannie_dela?
 read_csv("data/example.csv")
 ```
 
+```{r, eval = FALSE, echo=FALSE}
+# см. https://gist.github.com/agricolamz/561980251b5f000e1b4cf3d5ce1d2ef3
+```
+
