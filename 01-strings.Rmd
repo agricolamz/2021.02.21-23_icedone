@@ -10,7 +10,7 @@ editor_options:
 * `stringr`, который входит в `tidyverse` ('str_')
 * `stringi` ('stri_')
 
-```{r libraries}
+```{r libraries, message=FALSE}
 library(tidyverse)
 library(stringi)
 ```
