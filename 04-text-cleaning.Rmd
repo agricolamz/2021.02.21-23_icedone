@@ -11,7 +11,7 @@ editor_options:
 
 В этом эпизоде сериала АйсДан мы выясним, как обычно выглядят текстовые данные (и откуда их, кстати, брать!), как мы хотим, чтобы текстовые данные выглядели, и как перевести одно в другое. Бонус: смешные графики!
 
-<iframe width="560" height="315" src="https://www.youtube.com/watch?v=Pi4_LNX4IyY" frameborder="0" allowfullscreen></iframe>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/Pi4_LNX4IyY" frameborder="0" allowfullscreen></iframe>
 
 Для начала давайте установим нужные библиотеки:
 
