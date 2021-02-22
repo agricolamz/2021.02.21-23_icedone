@@ -288,12 +288,12 @@ my_scrap <- function(x){
   print(x)
   source <- read_html(str_c("https://ficbook.net", x))
   source %>% 
-    html_nodes("h3 > a") %>% 
+    html_nodes("h3 a") %>% 
     html_text() ->
     titles
   
   source %>% 
-    html_nodes("h3 > a") %>% 
+    html_nodes("h3 a") %>% 
     html_attr("href") ->
     links
   
